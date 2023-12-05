@@ -1,0 +1,30 @@
+name: Test Frontend on Push
+run-name: Testing Frontend
+
+on:
+  push:
+    branches:
+      - '**'
+    paths:
+      - frontend/**
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@main
+
+      - name: Install dependencies
+        uses: npm install
+
+      - name: Lint
+        uses: npm run lint
+
+      - name: Test Build
+        uses: npm run build
+
+
