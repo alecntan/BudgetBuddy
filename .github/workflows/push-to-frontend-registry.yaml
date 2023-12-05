@@ -1,5 +1,5 @@
 name: Push Frontend Image to Registry
-run-name: Pushng frontend image to registry
+run-name: Pushing frontend image to registry
 on:
   push:
     branches:
