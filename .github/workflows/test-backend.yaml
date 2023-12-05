@@ -25,6 +25,6 @@ jobs:
           distribution: 'temurin'
 
       - name: Test with Maven
-        uses: mvn --batch-mode --update-snapshots test
+        run: mvn --batch-mode --update-snapshots test
 
 
