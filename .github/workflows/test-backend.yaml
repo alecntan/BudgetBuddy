@@ -3,8 +3,9 @@ run-name: Testing Backend
 
 on:
   push:
-    branches:
-      - '**'
+    branches-ignore:
+      - main
+      - dev
 
 jobs:
   build-backend:
