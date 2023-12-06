@@ -1,0 +1,38 @@
+name: Push Backend Image to Registry
+run-name: Pushing backend image to registry
+on:
+  push:
+    branches:
+      - dev
+    paths:
+      - backend/**
+
+jobs:
+  stage-frontend:
+    runs-on: ubuntu-latest
+    environment: staging
+    defaults:
+      run:
+        working-directory: ./backend
+    steps:
+      - name: Checkout Master
+        uses: actions/checkout@main
+
+
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DO_ACCESS_KEY }}
+
+      - name: Building Container Image
+        run: docker build -t registry.digitalocean.com/${{ secrets.DO_REGISTRY_NAME }}/budgetbuddy:backend-latest .
+
+      - name: Login to DigitalOcean container registry with short-lived credentials
+        run: |
+          credentials=$(( doctl registry login --expiry-seconds 1200 ))
+          echo "::add-mask::$credentials"
+
+
+      - name: Push image to DigitalOcean container registry
+        run: docker push registry.digitalocean.com/${{ secrets.DO_REGISTRY_NAME }}/budgetbuddy:backend-latest 
+          
