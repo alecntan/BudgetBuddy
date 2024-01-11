@@ -5,13 +5,10 @@ export async function middleware( request : NextRequest ) {
     
     let { response, supabase } = getMiddlewareClient(request);
 
-    const { data, error }  = await supabase.auth.getSession();    
-
-    console.log( data );
+    const { data }  = await supabase.auth.getSession();    
 
     if( data.session === null && request.nextUrl.pathname !== "/auth/login" ) {
         const url = new URL('/auth/login', request.url);
-        console.log(url.toString());
         return NextResponse.redirect(url);
     }
 
