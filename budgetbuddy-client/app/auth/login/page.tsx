@@ -14,12 +14,13 @@ import {
     VStack,
     FormErrorMessage,
 } from "@chakra-ui/react";
-import { useFormState } from "react-dom";
+import { useFormState, useFormStatus } from "react-dom";
 import loginAction from "@/actions/auth/loginAction";
 
 export default function LoginPage() {
 
     const [ state, formAction ] = useFormState( loginAction, { isError : false, message : "" });
+    const { pending } = useFormStatus();
 
     return (
         <Container maxW='100%' height={'100vh'} paddingY={'20px'}>
@@ -38,7 +39,7 @@ export default function LoginPage() {
                             <FormLabel>Password</FormLabel>
                             <Input name="password" type='password' />
                         </Box>
-                        <Button colorScheme={'teal'} width={'100%'} type='submit'>Submit</Button>
+                        <SubmitButton />
                         <Text><Link href="#">Forgot Your Password?</Link></Text>
                     </VStack>
                     <FormErrorMessage marginTop={"20px"}>
@@ -51,5 +52,10 @@ export default function LoginPage() {
             </Center>
         </Container>
     );
+}
+
+const SubmitButton = () => {
+    const { pending } = useFormStatus();
+    return <Button isLoading={pending} loadingText={"Submitting"} colorScheme={'teal'} width={'100%'} type='submit'>Submit</Button>;
 }
 
