@@ -9,14 +9,13 @@ import {
     FormControl,
     FormLabel,
     Box,
-    Button,
     Text,
     VStack,
-    FormErrorMessage,
 } from "@chakra-ui/react";
-import { useFormState, useFormStatus } from "react-dom";
+import { useFormState } from "react-dom";
 import loginAction from "@/actions/auth/loginAction";
 import FormAlert from "../FormAlert";
+import SubmitButton from "../components/SubmitButton";
 
 export default function LoginPage() {
 
@@ -50,8 +49,4 @@ export default function LoginPage() {
     );
 }
 
-const SubmitButton = () => {
-    const { pending } = useFormStatus();
-    return <Button isLoading={pending} loadingText={"Submitting"} colorScheme={'teal'} width={'100%'} type='submit'>Submit</Button>;
-}
 

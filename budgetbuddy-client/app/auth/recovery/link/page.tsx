@@ -9,13 +9,13 @@ import {
     FormControl,
     FormLabel,
     Box,
-    Button,
     Text,
     VStack,
 } from "@chakra-ui/react";
-import { useFormState, useFormStatus } from "react-dom";
+import { useFormState } from "react-dom";
 import sendResetLink from "@/actions/auth/sendResetLink";
 import FormAlert from "../../FormAlert";
+import SubmitButton from "../../components/SubmitButton";
 
 export default function ResetPasswordLinkPage() {
 
@@ -30,7 +30,7 @@ export default function ResetPasswordLinkPage() {
                         <Center h='25px'>
                             <Heading as='h1' size='lg'>Reset Password</Heading>
                         </Center>
-                        <FormAlert show={ state.message != "" } isError={ state.isError } message={state.message} />
+                        <FormAlert isError={ state.isError } message={state.message} />
                         <Box width={'100%'} >
                             <FormLabel>Email</FormLabel>
                             <Input name="email" type="email" />
@@ -45,8 +45,4 @@ export default function ResetPasswordLinkPage() {
     );
 }
 
-const SubmitButton = () => {
-    const { pending } = useFormStatus();
-    return <Button isLoading={pending} loadingText={"Submitting"} colorScheme={'teal'} width={'100%'} type='submit'>Submit</Button>;
-}
 

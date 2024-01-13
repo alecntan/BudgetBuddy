@@ -8,14 +8,12 @@ import {
     FormControl,
     FormLabel,
     Box,
-    Button,
-    Text,
     VStack,
-    FormErrorMessage
 } from "@chakra-ui/react";
-import { useFormState, useFormStatus } from "react-dom";
+import { useFormState } from "react-dom";
 import resetPassword from "@/actions/auth/resetPassword";
 import FormAlert from "../../FormAlert";
+import SubmitButton from "../../components/SubmitButton";
 
 export default function ResetPasswordFormPage() {
 
@@ -46,10 +44,5 @@ export default function ResetPasswordFormPage() {
             </Center>
         </Container>
     );
-}
-
-const SubmitButton = () => {
-    const { pending } = useFormStatus();
-    return <Button isLoading={pending} loadingText={"Submitting"} colorScheme={'teal'} width={'100%'} type='submit'>Submit</Button>;
 }
 
