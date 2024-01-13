@@ -12,36 +12,31 @@ import {
     Button,
     Text,
     VStack,
-    FormErrorMessage,
 } from "@chakra-ui/react";
 import { useFormState, useFormStatus } from "react-dom";
-import loginAction from "@/actions/auth/loginAction";
-import FormAlert from "../FormAlert";
+import sendResetLink from "@/actions/auth/sendResetLink";
+import FormAlert from "../../FormAlert";
 
-export default function LoginPage() {
+export default function ResetPasswordLinkPage() {
 
-    const [ state, formAction ] = useFormState( loginAction, { isError : false, message : "" });
+    const [ state, formAction ] = useFormState(sendResetLink, { isError : false, message : "" });
 
     return (
         <Container maxW='100%' height={'100vh'} paddingY={'20px'}>
             <Center width={'100%'} height={'100%'}>
             <form style={{ width: '400px', marginBottom: '100px'  }} action={formAction}>
                 <FormControl isInvalid={state.isError} isRequired>
-                   <VStack width={'100%'} spacing={'15px'}>
+                    <VStack width={'100%'} spacing={'15px'}>
                         <Center h='25px'>
-                            <Heading as='h1' size='lg'>Login</Heading>
+                            <Heading as='h1' size='lg'>Reset Password</Heading>
                         </Center>
-                        <FormAlert isError={state.isError } message={state.message} />
+                        <FormAlert show={ state.message != "" } isError={ state.isError } message={state.message} />
                         <Box width={'100%'} >
                             <FormLabel>Email</FormLabel>
                             <Input name="email" type="email" />
                         </Box>
-                        <Box width={'100%'}>
-                            <FormLabel>Password</FormLabel>
-                            <Input name="password" type='password' />
-                        </Box>
                         <SubmitButton />
-                        <Text><Link href="/auth/recovery/link">Forgot Password?</Link></Text>
+                        <Text><Link href="/auth/login">Go to Login Page</Link></Text>
                     </VStack>
                 </FormControl>
             </form>

@@ -7,7 +7,7 @@ export async function middleware( request : NextRequest ) {
 
     const { data }  = await supabase.auth.getSession();    
 
-    if( data.session === null && request.nextUrl.pathname !== "/auth/login" ) {
+    if( data.session === null ) {
         const url = new URL('/auth/login', request.url);
         return NextResponse.redirect(url);
     }
@@ -17,6 +17,6 @@ export async function middleware( request : NextRequest ) {
 
 export const config = {
     matcher: [
-        "/((?!_next/static|_next/image/favicon.ico).*)",
+        "/((?!_next/static|_next/image/favicon.ico|auth/login|auth/recovery/link|auth/callback|auth/recovery/authenticate).*)",
     ],
 }
