@@ -15,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { useFormState, useFormStatus } from "react-dom";
 import resetPassword from "@/actions/auth/resetPassword";
+import FormAlert from "../../FormAlert";
 
 export default function ResetPasswordFormPage() {
 
@@ -25,10 +26,11 @@ export default function ResetPasswordFormPage() {
             <Center width={'100%'} height={'100%'}>
             <form style={{ width: '400px', marginBottom: '100px'  }} action={formAction}>
                 <FormControl isInvalid={state.isError} isRequired>
-                    <Center marginBottom={'20px'} h='25px'>
-                        <Heading as='h1' size='lg'>Reset Password</Heading>
-                    </Center>
-                    <VStack width={'100%'} spacing={'15px'}>
+                   <VStack width={'100%'} spacing={'15px'}>
+                        <Center marginBottom={'20px'} h='25px'>
+                            <Heading as='h1' size='lg'>Reset Password</Heading>
+                        </Center>
+                        <FormAlert isError={state.isError} message={state.message} />
                         <Box width={'100%'} >
                             <FormLabel>New Password</FormLabel>
                             <Input name="password1" type="password" />
@@ -37,15 +39,8 @@ export default function ResetPasswordFormPage() {
                             <FormLabel>Verify Password</FormLabel>
                             <Input name="password2" type="password" />
                         </Box>
-
                         <SubmitButton />
                     </VStack>
-                    <FormErrorMessage marginTop={"20px"}>
-                        <Center width={'100%'} height={'100%'}>
-                            <Text>{ state.message }</Text>
-                        </Center>
-                    </FormErrorMessage>
-                    { state.isError === false && state.message !== "" ? <Text fontSize={'sm'}>{state.message}</Text> : null }
                 </FormControl>
             </form>
             </Center>
