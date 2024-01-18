@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: test
     steps:
-     - name: Checkout
+      - name: Checkout
         uses: actions/checkout@v4
       - name: Install Dependencies
         run: npm install
