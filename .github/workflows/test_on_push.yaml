@@ -1,0 +1,25 @@
+name: Test-On-Push
+run-name: Testing before pushing
+on:
+  push:
+    branches-ignore:
+      - 'main'
+      - 'dev'
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: ./budgetbuddy-client
+          
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install Dependencies
+        run: npm install
+      - name: Lint
+        run: npm run lint
+      - name: npm run build
+
