@@ -16,6 +16,11 @@ jobs:
     runs-on: ubuntu-latest
     environment: test
     steps:
+      - name: Setup .env.local file
+        run: |
+          touch .env.local
+          echo NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }} >> .env.local
+          echo NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ NEXT_PUBLIC_SUPABASE_ANON_KEY }} >> .env.local
       - name: Checkout
         uses: actions/checkout@v4
       - name: Install Dependencies
