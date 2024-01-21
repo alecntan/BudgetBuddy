@@ -33,7 +33,6 @@ export default async function loginAction( _ : any, formData : FormData ) {
     });
 
     if( error ) {
-        console.log(error);
         return { isError : true, message : "Could Not Authenticate User" };
     }
 

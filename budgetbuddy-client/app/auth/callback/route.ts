@@ -11,7 +11,6 @@ export async function GET( request : Request ) {
         const supabaseClient = getServerClient(cookieStore);
         await supabaseClient.auth.exchangeCodeForSession(code);
     } 
-    console.log(`Redirecting to ${requestUrl.origin}`);
     return NextResponse.redirect(requestUrl.origin);
 }
 

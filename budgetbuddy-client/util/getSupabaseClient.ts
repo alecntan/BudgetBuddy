@@ -17,9 +17,6 @@ export function getBrowserClient() {
 
 export function getServerClient(cookieStore : ReturnType<typeof cookies>) {
 
-    console.log(SUPABASE_URL);
-    console.log(SUPABASE_ANON_KEY);
-
     return createServerClient(
         SUPABASE_URL, SUPABASE_ANON_KEY, {
             cookies : {
