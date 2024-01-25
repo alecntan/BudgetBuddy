@@ -3,34 +3,31 @@
 import { Flex, Menu, MenuButton, MenuList, MenuItem, Heading, Button, Box, Center, CircularProgress } from "@chakra-ui/react";
 import { HiOutlineLogout } from 'react-icons/hi';
 import { GoChevronDown } from 'react-icons/go';
-import { getBrowserClient } from "@/util/getSupabaseClient";
 import { useRouter } from 'next/navigation';
 import { useState, useEffect} from 'react';
-import type { User } from "@supabase/supabase-js";
-import { UserContext } from "./UserContext";
+import getUserProfile from "@/util/db/getUserProfile";
+import type { TypeUserProfile } from "@/util/db/getUserProfile";
+import signoutUser from "@/util/auth/signoutUser";
 
 export default function DashboardLayout({ children } : { children : React.ReactNode }) {
 
-
-    const supabase = getBrowserClient();
-    const [ UserData, setUserData ] = useState<User | null>(null);
+    const [ UserProfile, setUserProfile ] = useState<TypeUserProfile | null >(null);
 
     useEffect( () => {
-            const getUserData = async () => {
-            const { data : { user } }  = await supabase.auth.getUser();
-            setUserData(user);
-        };
-        getUserData()
-    });
-
+        const loadUserProfile = async () => {
+            const data = await getUserProfile();
+            setUserProfile(data);
+        }
+        loadUserProfile();
+    }, []);
 
     const router = useRouter();
     const handleLogout = () => {
-        supabase.auth.signOut();
+        signoutUser();
         router.push('/auth/login');
     }
 
-    if( UserData === null ) {
+    if( UserProfile === null ) {
         return (
             <Center width={'100%'} height={'100vh'}>
                 <CircularProgress isIndeterminate size={'70px'} />
@@ -70,7 +67,7 @@ export default function DashboardLayout({ children } : { children : React.ReactN
                         rightIcon={<GoChevronDown />}
                         backgroundColor={'white'}
                     >
-                        { UserData !== null ? UserData.email : null }
+                        { UserProfile !== null ? UserProfile.first_name : null }
                     </MenuButton>
                     <MenuList>
                         <MenuItem>Profile</MenuItem>
@@ -79,9 +76,7 @@ export default function DashboardLayout({ children } : { children : React.ReactN
                </Menu>
             </Flex>
             <Center>
-                <UserContext.Provider value={UserData}>
-                    { children }
-                </UserContext.Provider>
+                { children }
             </Center>
         </Flex>
     );
