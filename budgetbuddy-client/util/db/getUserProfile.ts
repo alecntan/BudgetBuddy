@@ -1,5 +1,3 @@
-"use client"
-
 import { getBrowserClient } from "../getSupabaseClient";
 import { QueryData } from '@supabase/supabase-js';
 

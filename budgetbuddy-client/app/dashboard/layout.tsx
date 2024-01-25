@@ -1,6 +1,6 @@
 "use client" 
 
-import { Flex, Menu, MenuButton, MenuList, MenuItem, Heading, Button, Box, Center, CircularProgress } from "@chakra-ui/react";
+import { Flex, Menu, MenuButton, MenuList, MenuItem, HStack, Heading, Button, Box, Center, CircularProgress } from "@chakra-ui/react";
 import { HiOutlineLogout } from 'react-icons/hi';
 import { GoChevronDown } from 'react-icons/go';
 import { useRouter } from 'next/navigation';
@@ -55,11 +55,11 @@ export default function DashboardLayout({ children } : { children : React.ReactN
                     <Box paddingY={'15px'} paddingRight={'10px'} width={'200px'} borderRightWidth={'2px'} borderRightColor={'#ebebeb'}>
                         <Heading size={'sm'}>Budget Buddy</Heading>
                     </Box>
-                    <Flex width={'100%'} paddingX={'30px'} justifyContent={'space-between'} alignItems={'center'}>
-                        <Button size={'sm'} variant={'link'} color={'black'}>Home</Button>
+                    <HStack paddingX={'30px'} spacing="50px">
+                        < Button size={'sm'} variant={'link'} color={'black'}>Home</Button>
                         <Button size={'sm'} variant={'link'} color={'black'}>Budgets</Button>
-                        <Button size={'sm'} variant={'link'} color={'black'}>Admin</Button>
-                    </Flex>
+                        { UserProfile.user_role === 'admin' ? <Button size={'sm'} variant={'link'} color={'black'}>Admin</Button> : null }
+                    </HStack>
                 </Flex>
                <Menu>
                     <MenuButton
@@ -67,7 +67,7 @@ export default function DashboardLayout({ children } : { children : React.ReactN
                         rightIcon={<GoChevronDown />}
                         backgroundColor={'white'}
                     >
-                        { UserProfile !== null ? UserProfile.first_name : null }
+                        { UserProfile !== null ? `${UserProfile.first_name} ${UserProfile.last_name}` : null }
                     </MenuButton>
                     <MenuList>
                         <MenuItem>Profile</MenuItem>
