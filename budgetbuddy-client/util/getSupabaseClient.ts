@@ -34,14 +34,7 @@ export function getServerClient(cookieStore : ReturnType<typeof cookies>) {
     );
 }
 
-export function getMiddlewareClient( request : NextRequest ) {
-
-
-    let response = NextResponse.next({
-        request : {
-            headers : request.headers,
-        }
-    });
+export function getMiddlewareClient( response : NextResponse, request : NextRequest ) {
 
     const supabase =  createServerClient<Database>( SUPABASE_URL, SUPABASE_ANON_KEY, {
         cookies : {
