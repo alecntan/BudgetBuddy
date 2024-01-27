@@ -1,0 +1,33 @@
+name: Build and Deploy to Staging
+run-name: Deploying to Staging
+on:
+  push:
+    branches:
+      - dev
+  worklflow-dispatch:
+
+defaults:
+  run:
+    working-directory: ./budgetbuddy-client
+
+jobs:
+  build-dockerfile:
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DO_ACCESS_KEY }}
+
+      - name: Build Container Image
+        run: docker build --build-arg NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }} --build-arg NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ NEXT_PUBLIC_SUPABASE_ANON_KEY }} -t ${{ secrets.REGISTRY_NAME }}/budgetbuddy-client:latest 
+
+      - name: Login to Digitalocean Container Registry
+        run: doctly registry login --expiry-seconds 1200
+
+      - name: Push Image to DigitalOcean Container Registry
+        run: docker push ${{ secrets.REGISTRY_NAME }}/budgetbuddy-client:latest
