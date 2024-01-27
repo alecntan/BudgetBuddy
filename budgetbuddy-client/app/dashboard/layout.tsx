@@ -8,6 +8,7 @@ import { useState, useEffect} from 'react';
 import getUserProfile from "@/util/db/getUserProfile";
 import type { TypeUserProfile } from "@/util/db/getUserProfile";
 import signoutUser from "@/util/auth/signoutUser";
+import { ProfileContext } from './ProfileContext';
 
 export default function DashboardLayout({ children } : { children : React.ReactNode }) {
 
@@ -25,6 +26,10 @@ export default function DashboardLayout({ children } : { children : React.ReactN
     const handleLogout = () => {
         signoutUser();
         router.push('/auth/login');
+    }
+
+    const onClickUsersButton = () => {
+        router.push("/dashboard/admin/users");
     }
 
     if( UserProfile === null ) {
@@ -52,13 +57,20 @@ export default function DashboardLayout({ children } : { children : React.ReactN
                 boxShadow={'base'}
             >
                 <Flex width={'500px'}>
-                    <Box paddingY={'15px'} paddingRight={'10px'} width={'200px'} borderRightWidth={'2px'} borderRightColor={'#ebebeb'}>
+                    <Box paddingY={'15px'} paddingRight={'30px'}  borderRightWidth={'2px'} borderRightColor={'#ebebeb'}>
                         <Heading size={'sm'}>Budget Buddy</Heading>
                     </Box>
                     <HStack paddingX={'30px'} spacing="50px">
                         < Button size={'sm'} variant={'link'} color={'black'}>Home</Button>
                         <Button size={'sm'} variant={'link'} color={'black'}>Budgets</Button>
-                        { UserProfile.user_role === 'admin' ? <Button size={'sm'} variant={'link'} color={'black'}>Admin</Button> : null }
+                        { UserProfile.user_role === 'admin' ? ( <Menu>
+                            <MenuButton as={Button} size={'sm'} color={'black'} variant={'link'} rightIcon={<GoChevronDown />} backgroundColor={'white'}>
+                               Admin 
+                            </MenuButton>
+                            <MenuList>
+                                <MenuItem onClick={onClickUsersButton}>Users</MenuItem>
+                            </MenuList>
+                        </Menu> ) : null }
                     </HStack>
                 </Flex>
                <Menu>
@@ -75,8 +87,10 @@ export default function DashboardLayout({ children } : { children : React.ReactN
                     </MenuList>
                </Menu>
             </Flex>
-            <Center>
-                { children }
+            <Center width={'80%'} maxWidth={'1350px'}>
+                <ProfileContext.Provider value={UserProfile}>
+                    { children }
+                </ProfileContext.Provider>
             </Center>
         </Flex>
     );

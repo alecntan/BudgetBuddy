@@ -1,12 +1,20 @@
 import {
 Flex, 
-Heading
+Heading,
+Card,
+CardHeader,
+Text,
 } from "@chakra-ui/react";
 
 export default function UserPage() {
     return (
-        <Flex width={'100%'} height={'100%'} backgroundColor={'white'} padding={'30px'} borderRadius={'20px'}>
-            <Heading>This is the User Page</Heading>
+        <Flex width={'100%'}>
+            <Card width={'100%'} borderRadius={'10px'} variant={'elevated'}>
+                <CardHeader>
+                    <Heading size={'sm'} marginBottom={'5px'}>Team Members</Heading>
+                    <Text>{"Invite or manage your organisation's team members"}</Text>
+                </CardHeader>
+            </Card>
         </Flex>
     );
 }

@@ -1,7 +1,9 @@
 "use client"
 
-import { Heading } from "@chakra-ui/react";
+import { Heading, SimpleGrid, Card, CardHeader, CardBody, Text } from "@chakra-ui/react";
 
 export default function DashboardPage() {
-    return <Heading>This is the Dashboard Page</Heading>
+    return (
+        <Heading>Dashboard Page</Heading>
+    );
 }
