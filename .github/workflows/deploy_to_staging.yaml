@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - dev
-  worklflow-dispatch:
-
 defaults:
   run:
     working-directory: ./budgetbuddy-client
