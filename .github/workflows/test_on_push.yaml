@@ -12,7 +12,7 @@ defaults:
     working-directory: ./budgetbuddy-client
           
 jobs:
-  build:
+  test-build:
     runs-on: ubuntu-latest
     environment: test
     steps:
@@ -30,3 +30,32 @@ jobs:
       - name: npm run build
         run: npm run build
 
+  test-supabase:
+    runs-on: ubuntu-latest
+    environment: test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+    
+      - name: Setup Supabase
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Start supabase local development setup
+        run: supabase start
+
+      - name: Lint Database 
+        run: supabase db lint
+
+      - name: Test Database
+        run: supabase db test
+
+      - name: Verify generated types are checked in
+        run: |
+          supabase gen types typescript --local > types.gen.ts
+          if ! git diff --ignore-space-at-eol --exit-code --quiet types.gen.ts; then
+            echo "Detected uncommited changes after build. See status below:"
+            git diff
+            exit 1
+          fi 
