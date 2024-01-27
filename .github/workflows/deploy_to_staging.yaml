@@ -25,7 +25,7 @@ jobs:
         run: docker build --build-arg NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }} --build-arg NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }} -t ${{ secrets.DO_REGISTRY_NAME }}/budgetbuddy-client:latest .
 
       - name: Login to Digitalocean Container Registry
-        run: doctly registry login --expiry-seconds 1200
+        run: doctl registry login --expiry-seconds 1200
 
       - name: Push Image to DigitalOcean Container Registry
         run: docker push ${{ secrets.REGISTRY_NAME }}/budgetbuddy-client:latest
