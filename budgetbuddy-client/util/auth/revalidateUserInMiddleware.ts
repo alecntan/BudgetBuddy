@@ -1,8 +1,8 @@
 import { getMiddlewareClient } from "../getSupabaseClient";
-import { type NextRequest } from 'next/server';
+import { type NextRequest, type NextResponse } from 'next/server';
 
-async function revalidateUserInMiddleware( request : NextRequest ) {
-    let { supabase } = getMiddlewareClient(request);
+async function revalidateUserInMiddleware( response : NextResponse, request : NextRequest ) {
+    let { supabase } = getMiddlewareClient( response, request);
     const { data: { user } } = await supabase.auth.getUser();
 
     if( user === null ) {
