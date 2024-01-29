@@ -1,17 +1,13 @@
 import revalidateUserInMiddleware from "./util/auth/revalidateUserInMiddleware";
 import { NextResponse, type NextRequest } from 'next/server';
+import { getMiddlewareClient } from "./util/getSupabaseClient";
 
 
 export async function middleware( request : NextRequest ) {
 
-    let response = NextResponse.next({
-        request: {
-            headers: request.headers,
-        }
-    });
-    
-    const isValidUser = revalidateUserInMiddleware(response, request);
-    if( !isValidUser ) {
+    const { response, supabase } = getMiddlewareClient(request);    
+    const { data: { user } } = await supabase.auth.getUser();
+    if( user === null ) {
         const url = new URL('/auth/login', request.url);
         return NextResponse.redirect(url);
     }

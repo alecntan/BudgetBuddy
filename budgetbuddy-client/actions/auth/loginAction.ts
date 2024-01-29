@@ -36,5 +36,5 @@ export default async function loginAction( _ : any, formData : FormData ) {
         return { isError : true, message : "Could Not Authenticate User" };
     }
 
-    return redirect("/");
+    return redirect("/dashboard");
 }
