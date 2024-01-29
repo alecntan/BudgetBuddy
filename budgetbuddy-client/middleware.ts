@@ -11,13 +11,13 @@ export async function middleware( request : NextRequest ) {
     });
     
     const isValidUser = revalidateUserInMiddleware(response, request);
-
-    if( request.nextUrl.pathname === "/" ) { return NextResponse.redirect(new URL('/dashboard', request.url )); }
-
     if( !isValidUser ) {
         const url = new URL('/auth/login', request.url);
         return NextResponse.redirect(url);
     }
+
+    if( request.nextUrl.pathname === "/" ) { return NextResponse.redirect(new URL('/dashboard', request.url )); }
+
     return response;
 }
 
