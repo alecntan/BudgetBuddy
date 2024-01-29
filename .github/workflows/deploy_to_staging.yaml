@@ -29,3 +29,23 @@ jobs:
 
       - name: Push Image to DigitalOcean Container Registry
         run: docker push ${{ secrets.DO_REGISTRY_NAME }}/budgetbuddy-client:latest
+
+  push-db:
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Supabase
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Link Supabase
+        run: supabase link --project-ref=${ secrets.SUPABASE_PROJECT_REF }
+
+      - name: Push DB Migrations
+        run: supabase db push
+
+  
