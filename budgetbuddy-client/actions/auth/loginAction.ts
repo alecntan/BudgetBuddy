@@ -2,9 +2,10 @@
 
 import { cookies } from "next/headers";
 import { ZodError, z } from "zod";
-import { getServerClient } from "@/util/getSupabaseClient";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+
+import { createClient } from '@/util/supabase/actions';
 
 export default async function loginAction( _ : any, formData : FormData ) {
     console.log('Entered Login Action');
@@ -28,7 +29,7 @@ export default async function loginAction( _ : any, formData : FormData ) {
     }
 
     const cookieStore = cookies();
-    const supabase = getServerClient(cookieStore);
+    const supabase = createClient(cookieStore);
     const { error } = await supabase.auth.signInWithPassword({
         email : formEmail,
         password: formPassword

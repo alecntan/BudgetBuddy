@@ -1,7 +1,7 @@
-import { getBrowserClient } from "../getSupabaseClient";
 import { QueryData } from '@supabase/supabase-js';
+import { createClient } from '../supabase/client';
 
-const supabase = getBrowserClient();
+const supabase = createClient();
 const profileQuery = supabase.from('profiles').select('first_name, last_name, user_role').maybeSingle();
 export type TypeUserProfile = QueryData<typeof profileQuery>;
 
