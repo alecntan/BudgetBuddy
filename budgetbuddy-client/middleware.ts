@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { getMiddlewareClient } from "./util/getSupabaseClient";
+import { createServerClient, type CookieOptions } from '@supabase/ssr';
 
 
 export async function middleware( request : NextRequest ) {
@@ -7,14 +7,58 @@ export async function middleware( request : NextRequest ) {
     console.log("Request Headers:");
     console.log(request.headers);
 
-    const { response, supabase } = getMiddlewareClient(request);    
-    const { data: { user } } = await supabase.auth.getUser();
-    if( user === null ) {
-        const url = new URL('/auth/login', request.url);
-        return NextResponse.redirect(url);
-    }
-
-    // if( request.nextUrl.pathname === "/" ) { return NextResponse.redirect(new URL('/dashboard', request.url )); }
+    let response = NextResponse.next({
+        request: {
+            headers: request.headers,
+        },
+    });
+    
+    const supabase = createServerClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        {
+            cookies: {
+                get( name : string ) {
+                    return request.cookies.get(name)?.value
+                },
+                set( name : string, value : string, options: CookieOptions ) {
+                    request.cookies.set({
+                        name,
+                        value,
+                        ...options,
+                    })
+                    response = NextResponse.next({
+                        request: {
+                            headers: request.headers,
+                        }
+                    })
+                    response.cookies.set({
+                        name, 
+                        value,
+                        ...options
+                    })
+                },
+                remove( name : string, options: CookieOptions ) {
+                    request.cookies.set({
+                        name, 
+                        value: '',
+                        ...options,
+                    })
+                    response = NextResponse.next({
+                        request: {
+                            headers: request.headers,
+                        },
+                    })
+                    response.cookies.set({
+                        name,
+                        value: '',
+                        ...options,
+                    })
+                }
+            }
+        }
+    );
+    await supabase.auth.getUser();
     console.log("Response Headers");
     console.log(response.headers);
     console.log('exiting middleware');
@@ -23,6 +67,7 @@ export async function middleware( request : NextRequest ) {
 
 export const config = {
     matcher: [
-        "/((?!_next/static|_next/image/favicon.ico|auth/login|auth/recovery/link|auth/callback|auth/recovery/authenticate).*)",
+//        "/((?!_next/static|_next/image/favicon.ico|auth/login|auth/recovery/link|auth/callback|auth/recovery/authenticate).*)",
+        "/((?!_next/static|_next/image/favicon.ico).*)",
     ],
 }
