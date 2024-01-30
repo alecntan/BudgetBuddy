@@ -4,8 +4,10 @@ import { cookies } from "next/headers";
 import { ZodError, z } from "zod";
 import { getServerClient } from "@/util/getSupabaseClient";
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 
 export default async function loginAction( _ : any, formData : FormData ) {
+    console.log('Entered Login Action');
 
     const formEmail = formData.get('email') as string;
     const formPassword = formData.get('password') as string;
@@ -35,6 +37,8 @@ export default async function loginAction( _ : any, formData : FormData ) {
     if( error ) {
         return { isError : true, message : "Could Not Authenticate User" };
     }
-
-    return redirect("/dashboard");
+    
+    revalidatePath('/dashboard', 'layout');
+    console.log('Exiting  Login Action');
+    redirect("/dashboard");
 }

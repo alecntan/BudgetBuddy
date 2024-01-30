@@ -3,6 +3,9 @@ import { getMiddlewareClient } from "./util/getSupabaseClient";
 
 
 export async function middleware( request : NextRequest ) {
+    console.log('Entering Middleware');
+    console.log("Request Headers:");
+    console.log(request.headers);
 
     const { response, supabase } = getMiddlewareClient(request);    
     const { data: { user } } = await supabase.auth.getUser();
@@ -12,7 +15,9 @@ export async function middleware( request : NextRequest ) {
     }
 
     // if( request.nextUrl.pathname === "/" ) { return NextResponse.redirect(new URL('/dashboard', request.url )); }
-
+    console.log("Response Headers");
+    console.log(response.headers);
+    console.log('exiting middleware');
     return response;
 }
 
