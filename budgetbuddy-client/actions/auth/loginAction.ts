@@ -39,7 +39,7 @@ export default async function loginAction( _ : any, formData : FormData ) {
         return { isError : true, message : "Could Not Authenticate User" };
     }
     
-    revalidatePath('/', 'layout');
+    revalidatePath('/dashboard', 'layout');
     console.log('Exiting  Login Action');
-    redirect("/");
+    redirect("/dashboard");
 }
