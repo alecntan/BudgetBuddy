@@ -46,7 +46,5 @@ export default async function loginAction(formData : FormData ) {
     
     console.log(`$$$$ After Login: ${cookieStore}`);
     console.log('Exiting  Login Action');
-    revalidatePath('/', 'layout');
-    redirect('/');
     //return { isError: false, message: "Logged In Succesfully" };
 }
