@@ -4,8 +4,8 @@ import { createServerClient, type CookieOptions } from '@supabase/ssr';
 
 export async function middleware( request : NextRequest ) {
     console.log('Entering Middleware');
-    console.log("Request Headers:");
-    console.log(request.headers);
+    //console.log("Request Headers:");
+    //console.log(request.headers);
 
     let response = NextResponse.next({
         request: {
@@ -19,9 +19,12 @@ export async function middleware( request : NextRequest ) {
         {
             cookies: {
                 get( name : string ) {
+                    console.log(`Middleware: Getting cookie ${name} of value ${request.cookies.get(name)?.value}`);
                     return request.cookies.get(name)?.value
                 },
                 set( name : string, value : string, options: CookieOptions ) {
+
+                    console.log(`Middleware: Setting cookie ${name} of value ${value}`);
                     request.cookies.set({
                         name,
                         value,
@@ -39,6 +42,7 @@ export async function middleware( request : NextRequest ) {
                     })
                 },
                 remove( name : string, options: CookieOptions ) {
+                    console.log(`Removing cookie ${name}`);
                     request.cookies.set({
                         name, 
                         value: '',
@@ -58,9 +62,12 @@ export async function middleware( request : NextRequest ) {
             }
         }
     );
-    await supabase.auth.getUser();
-    console.log("Response Headers");
-    console.log(response.headers);
+    const { error } = await supabase.auth.getUser();
+    if( error ) {
+        console.log(`Middleware Error: ${error}`);
+    }
+    //console.log("Response Headers");
+    //console.log(response.headers);
     console.log('exiting middleware');
     return response;
 }
