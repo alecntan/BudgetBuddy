@@ -29,6 +29,8 @@ export default async function loginAction( _ : any, formData : FormData ) {
     }
 
     const cookieStore = cookies();
+    console.log("$$$$$$$$$$$$$$$$$$$$$ SERVER ACTION $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+    console.log(`$$$$ BEFORE CLIENT: ${cookieStore}`);
     const supabase = createClient(cookieStore);
     const { error } = await supabase.auth.signInWithPassword({
         email : formEmail,
@@ -39,7 +41,8 @@ export default async function loginAction( _ : any, formData : FormData ) {
         return { isError : true, message : "Could Not Authenticate User" };
     }
     
+    console.log(`$$$$ After Login: ${cookieStore}`);
     revalidatePath('/', 'layout');
     console.log('Exiting  Login Action');
-    redirect("/");
+    return { isError: false, message: "Logged In Succesfully" };
 }

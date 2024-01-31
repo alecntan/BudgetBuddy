@@ -16,10 +16,19 @@ import { useFormState } from "react-dom";
 import loginAction from "@/actions/auth/loginAction";
 import FormAlert from "../FormAlert";
 import SubmitButton from "../components/SubmitButton";
+import { createClient } from "@/util/supabase/client";
 
 export default function LoginPage() {
 
     const [ state, formAction ] = useFormState( loginAction, { isError : false, message : "" });
+    const supabase = createClient();
+    supabase.auth.onAuthStateChange((event, session) => {
+        if( event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+            console.log("SIGNED IN");
+            console.log(`ACCESS TOKEN: ${session?.access_token}`);
+        }
+    });
+    
 
     return (
         <Container maxW='100%' height={'100vh'} paddingY={'20px'}>
