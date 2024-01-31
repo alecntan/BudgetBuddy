@@ -7,12 +7,13 @@ import { revalidatePath } from "next/cache";
 
 import { createClient } from '@/util/supabase/actions';
 
-export default async function loginAction( _ : any, formData : FormData ) {
+export default async function loginAction(formData : FormData ) {
     console.log('Entered Login Action');
 
     const formEmail = formData.get('email') as string;
     const formPassword = formData.get('password') as string;
 
+    /*
     const credentialsSchema = z.object({
         email: z.string().email(),
         password: z.string()
@@ -27,6 +28,7 @@ export default async function loginAction( _ : any, formData : FormData ) {
             return { isError : true, message : "Could Not Login. Please Try Again Later" }
         }
     }
+    */
 
     const cookieStore = cookies();
     console.log("$$$$$$$$$$$$$$$$$$$$$ SERVER ACTION $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
@@ -38,11 +40,13 @@ export default async function loginAction( _ : any, formData : FormData ) {
     });
 
     if( error ) {
-        return { isError : true, message : "Could Not Authenticate User" };
+        // return { isError : true, message : "Could Not Authenticate User" };
+        redirect('/error');
     }
     
     console.log(`$$$$ After Login: ${cookieStore}`);
-    revalidatePath('/', 'layout');
     console.log('Exiting  Login Action');
-    return { isError: false, message: "Logged In Succesfully" };
+    revalidatePath('/', 'layout');
+    redirect('/');
+    //return { isError: false, message: "Logged In Succesfully" };
 }

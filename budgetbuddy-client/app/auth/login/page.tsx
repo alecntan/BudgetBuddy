@@ -20,20 +20,13 @@ import { createClient } from "@/util/supabase/client";
 
 export default function LoginPage() {
 
-    const [ state, formAction ] = useFormState( loginAction, { isError : false, message : "" });
-    const supabase = createClient();
-    supabase.auth.onAuthStateChange((event, session) => {
-        if( event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
-            console.log("SIGNED IN");
-            console.log(`ACCESS TOKEN: ${session?.access_token}`);
-        }
-    });
-    
+    //const [ state, formAction ] = useFormState( loginAction, { isError : false, message : "" });
+    const state = { isError: false, message: "" };
 
     return (
         <Container maxW='100%' height={'100vh'} paddingY={'20px'}>
             <Center width={'100%'} height={'100%'}>
-            <form style={{ width: '400px', marginBottom: '100px'  }} action={formAction}>
+            <form style={{ width: '400px', marginBottom: '100px'  }} action={loginAction}>
                 <FormControl isInvalid={state.isError} isRequired>
                    <VStack width={'100%'} spacing={'15px'}>
                         <Center h='25px'>
