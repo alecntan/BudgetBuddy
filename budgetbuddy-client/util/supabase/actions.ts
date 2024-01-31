@@ -14,6 +14,7 @@ export function createClient( cookieStore : ReturnType<typeof cookies>) {
                 set( name: string, value: string, options: CookieOptions ) {
                     console.log(`Login Action: Setting cookie of name ${name} and value ${value}$`);
                     cookieStore.set({ name, value, ...options });
+                    console.log(`$$$$INSIDE CLIENT CODE POST SET COOKIE ${cookieStore}`);
                 },
                 remove( name: string, options: CookieOptions ){
                     console.log(`Login Action: Removing cookie of name ${name}`);
