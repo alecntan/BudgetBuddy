@@ -3,7 +3,7 @@ import { createServerClient, type CookieOptions } from '@supabase/ssr';
 
 
 export async function middleware( request : NextRequest ) {
-    console.log('Entering Middleware');
+    console.log('####################Entering Middleware###########################');
     //console.log("Request Headers:");
     //console.log(request.headers);
 
@@ -40,6 +40,8 @@ export async function middleware( request : NextRequest ) {
                         value,
                         ...options
                     })
+                    console.log("@@@@@@@@@@ INSIDE MIDDLEWARE CLIENT @@@@@@@@@@@@@@@@@@@@@@@@@@");
+                    console.log(`@@@@@@ Response Object Post Cookie Set: ${response.cookies}`);
                 },
                 remove( name : string, options: CookieOptions ) {
                     console.log(`Removing cookie ${name}`);
@@ -66,9 +68,9 @@ export async function middleware( request : NextRequest ) {
     if( error ) {
         console.log(`Middleware Error: ${error}`);
     }
-    //console.log("Response Headers");
-    //console.log(response.headers);
-    console.log('exiting middleware');
+    console.log("################## Response Cookies####################");
+    console.log(response.cookies);
+    console.log('##########Exiting middleware###################');
     return response;
 }
 
