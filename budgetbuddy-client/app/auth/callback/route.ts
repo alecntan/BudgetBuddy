@@ -1,6 +1,6 @@
-import { getServerClient } from '@/util/getSupabaseClient';
 import { NextResponse } from "next/server";
 import { cookies } from 'next/headers';
+import { createClient } from '@/util/supabase/actions';
 
 export async function GET( request : Request ) {
     const requestUrl = new URL(request.url);
@@ -8,7 +8,7 @@ export async function GET( request : Request ) {
 
     if( code ) {
         const cookieStore = cookies();
-        const supabaseClient = getServerClient(cookieStore);
+        const supabaseClient = createClient(cookieStore);
         await supabaseClient.auth.exchangeCodeForSession(code);
     } 
     return NextResponse.redirect(requestUrl.origin);

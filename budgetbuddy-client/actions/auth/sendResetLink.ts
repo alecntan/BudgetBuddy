@@ -2,7 +2,7 @@
 
 import { ZodError, z } from "zod"
 import { cookies } from "next/headers";
-import { getServerClient } from "@/util/getSupabaseClient";
+import { createClient } from '@/util/supabase/actions';
 import { type FormResponse } from "@/types/FormResponse";
 
 export default async function sendResetLink( initialState : FormResponse<boolean>, formData : FormData ) {
@@ -21,7 +21,7 @@ export default async function sendResetLink( initialState : FormResponse<boolean
     }
 
     const cookieStore = cookies();
-    const supabase = getServerClient(cookieStore);
+    const supabase = createClient(cookieStore);
     const { error }  = await supabase.auth.resetPasswordForEmail( formEmail,  { redirectTo : `${process.env.APP_DOMAIN}/auth/recovery/authenticate`});
 
     if( error ) {
