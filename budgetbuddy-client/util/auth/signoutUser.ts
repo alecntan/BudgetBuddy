@@ -1,8 +1,8 @@
 "use client"
 
-import { getBrowserClient } from '../getSupabaseClient';
+import { createClient } from '@/util/supabase/client';
 
 export default function signoutUser() {
-    const supabase = getBrowserClient();
+    const supabase = createClient();
     supabase.auth.signOut();
 }
