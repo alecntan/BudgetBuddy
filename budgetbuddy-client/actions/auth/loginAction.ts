@@ -4,8 +4,9 @@ import { cookies } from "next/headers";
 import { ZodError, z } from "zod";
 
 import { createClient } from '@/util/supabase/actions';
+import { FormResponse } from "@/types/FormResponse";
 
-export default async function loginAction( _ : any, formData : FormData ) {
+export default async function loginAction( initialState: FormResponse<null>, formData : FormData ) {
 
     const formEmail = formData.get('email') as string;
     const formPassword = formData.get('password') as string;
@@ -19,9 +20,9 @@ export default async function loginAction( _ : any, formData : FormData ) {
         credentialsSchema.parse({ email : formEmail, password: formPassword });
     } catch (e) {
         if( e instanceof ZodError ) {
-            return  { isError : true, message : `${e.issues[0].message}`}
+            return  { ...initialState, isError : true, message : `${e.issues[0].message}`}
         } else {
-            return { isError : true, message : "Could Not Login. Please Try Again Later" }
+            return { ...initialState, isError : true, message : "Could Not Login. Please Try Again Later" }
         }
     }
 
@@ -33,8 +34,8 @@ export default async function loginAction( _ : any, formData : FormData ) {
     });
 
     if( error ) {
-        return { isError : true, message : "Wrong Username or Password" };
+        return { ...initialState, isError : true, message : "Wrong Username or Password" };
     }
 
-    return { isError: false, message: "Logged In Succesfully" };
+    return { ...initialState, isRedirect: true, redirectUrl: "/dashboard" };
 }

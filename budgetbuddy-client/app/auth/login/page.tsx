@@ -16,10 +16,26 @@ import { useFormState } from "react-dom";
 import loginAction from "@/actions/auth/loginAction";
 import FormAlert from "../FormAlert";
 import SubmitButton from "../components/SubmitButton";
+import { FormResponse } from "@/types/FormResponse";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
 
-    const [ state, formAction ] = useFormState( loginAction, { isError : false, message : "" });
+    const initialState : FormResponse<null> = {
+        isRedirect: false,
+        redirectUrl: "",
+        result: null,
+        isError: false,
+        message: ""
+    };
+
+    const [ state, formAction ] = useFormState( loginAction, initialState );
+    const router = useRouter();
+
+    if( state.isRedirect ) {
+        router.push(state.redirectUrl);
+    }
 
     return (
         <Container maxW='100%' height={'100vh'} paddingY={'20px'}>
