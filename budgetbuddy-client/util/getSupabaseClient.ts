@@ -21,15 +21,12 @@ export function getServerClient(cookieStore : ReturnType<typeof cookies>) {
         SUPABASE_URL, SUPABASE_ANON_KEY, {
             cookies : {
                 get( name : string ) {
-                    console.log(`getting Cookie: ${name}`);
                     return cookieStore.get(name)?.value
                 },
                 set( name : string, value : string, options: CookieOptions ) {
-                    console.log(`Setting Cookie: ${name}, with value ${value}`);
                     cookieStore.set({ name, value, ...options })
                 },
                 remove( name : string, options : CookieOptions ) {
-                    console.log(`removing Cookie: ${name}`);
                     cookieStore.set({ name, value: '', ...options  })
                 }
             } 

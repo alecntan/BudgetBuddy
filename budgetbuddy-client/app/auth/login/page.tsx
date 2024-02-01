@@ -16,17 +16,15 @@ import { useFormState } from "react-dom";
 import loginAction from "@/actions/auth/loginAction";
 import FormAlert from "../FormAlert";
 import SubmitButton from "../components/SubmitButton";
-import { createClient } from "@/util/supabase/client";
 
 export default function LoginPage() {
 
-    //const [ state, formAction ] = useFormState( loginAction, { isError : false, message : "" });
-    const state = { isError: false, message: "" };
+    const [ state, formAction ] = useFormState( loginAction, { isError : false, message : "" });
 
     return (
         <Container maxW='100%' height={'100vh'} paddingY={'20px'}>
             <Center width={'100%'} height={'100%'}>
-            <form style={{ width: '400px', marginBottom: '100px'  }} action={loginAction}>
+            <form style={{ width: '400px', marginBottom: '100px'  }} action={formAction}>
                 <FormControl isInvalid={state.isError} isRequired>
                    <VStack width={'100%'} spacing={'15px'}>
                         <Center h='25px'>
@@ -50,5 +48,3 @@ export default function LoginPage() {
         </Container>
     );
 }
-
-

@@ -3,9 +3,6 @@ import { createServerClient, type CookieOptions } from '@supabase/ssr';
 
 
 export async function middleware( request : NextRequest ) {
-    console.log('####################Entering Middleware###########################');
-    //console.log("Request Headers:");
-    //console.log(request.headers);
 
     let response = NextResponse.next({
         request: {
@@ -19,12 +16,9 @@ export async function middleware( request : NextRequest ) {
         {
             cookies: {
                 get( name : string ) {
-                    console.log(`Middleware: Getting cookie ${name} of value ${request.cookies.get(name)?.value}`);
                     return request.cookies.get(name)?.value
                 },
                 set( name : string, value : string, options: CookieOptions ) {
-
-                    console.log(`Middleware: Setting cookie ${name} of value ${value}`);
                     request.cookies.set({
                         name,
                         value,
@@ -40,11 +34,8 @@ export async function middleware( request : NextRequest ) {
                         value,
                         ...options
                     })
-                    console.log("@@@@@@@@@@ INSIDE MIDDLEWARE CLIENT @@@@@@@@@@@@@@@@@@@@@@@@@@");
-                    console.log(`@@@@@@ Response Object Post Cookie Set: ${response.cookies}`);
                 },
                 remove( name : string, options: CookieOptions ) {
-                    console.log(`Removing cookie ${name}`);
                     request.cookies.set({
                         name, 
                         value: '',
@@ -64,19 +55,18 @@ export async function middleware( request : NextRequest ) {
             }
         }
     );
-    const { error } = await supabase.auth.getUser();
-    if( error ) {
-        console.log(`Middleware Error: ${error}`);
+    const { data: { user } } = await supabase.auth.getUser();
+    if( ! user ) {
+        console.log(request.url);
+        console.log(new URL('/auth/login', request.url));
+        return NextResponse.redirect(new URL('/auth/login', request.url));
     }
-    console.log("################## Response Cookies####################");
-    console.log(response.cookies);
-    console.log('##########Exiting middleware###################');
     return response;
 }
 
 export const config = {
     matcher: [
-//        "/((?!_next/static|_next/image/favicon.ico|auth/login|auth/recovery/link|auth/callback|auth/recovery/authenticate).*)",
-        "/((?!_next/static|_next/image/favicon.ico).*)",
+        "/((?!_next/static|_next/image/favicon.ico|auth/login|auth/recovery/link|auth/callback|auth/recovery/authenticate).*)",
+        //"/((?!_next/static|_next/image/favicon.ico).*)",
     ],
 }

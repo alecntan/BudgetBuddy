@@ -8,7 +8,6 @@ export function createClient( cookieStore: ReturnType<typeof cookies> ) {
         {
             cookies: {
                 get( name : string ) {
-                    console.log(`Server: Getting Cookie of name ${name} and value ${cookieStore.get(name)?.value}`);
                     return cookieStore.get(name)?.value
                 }
             },
