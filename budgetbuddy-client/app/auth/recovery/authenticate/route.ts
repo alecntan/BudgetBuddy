@@ -11,11 +11,11 @@ export async function GET( request : Request ) {
         const supabaseClient = createClient(cookieStore);
         const { error } = await supabaseClient.auth.exchangeCodeForSession(code);
         if( error ) {
-            return NextResponse.redirect(new URL("/error", requestUrl.origin));
+            return NextResponse.redirect(new URL("/error", `${process.env.APP_DOMAIN}`));
         }
-        return NextResponse.redirect(new URL("/auth/recovery/reset", requestUrl.origin));
+        return NextResponse.redirect(new URL("/auth/recovery/reset", `${process.env.APP_DOMAIN}`));
     } 
 
-    return NextResponse.redirect(new URL("/error", requestUrl.origin));
+    return NextResponse.redirect(new URL("/error", `${process.env.APP_DOMAIN}`));
 
 }
