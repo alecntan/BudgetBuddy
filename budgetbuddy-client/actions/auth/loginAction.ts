@@ -34,9 +34,8 @@ export default async function loginAction( initialState: FormResponse<null>, for
     });
 
     if( error ) {
-        console.log(error);
         return { ...initialState, isError : true, message : "Wrong Username or Password" };
     }
 
-    return { ...initialState, isRedirect: true, redirectUrl: "/dashboard" };
+    return { ...initialState, isError: false, isRedirect: true, redirectUrl: "/dashboard", message: "Logged In Successfully" };
 }
