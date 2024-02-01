@@ -1,24 +1,25 @@
 'use server'
 
 import { cookies } from "next/headers";
-import { getServerClient } from "@/util/getSupabaseClient";
+import { FormResponse } from "@/types/FormResponse";
+import { createClient } from "@/util/supabase/actions";
 
-export default async function resetPassword( _ : any, formData : FormData ) {
+export default async function resetPassword( initialState : FormResponse<boolean>, formData : FormData ) {
 
     const formPassword1 = formData.get('password1') as string;
     const formPassword2 = formData.get('password2') as string;
 
     if( formPassword1 !== formPassword2 ) {
-        return { isError : true, message: "Passwords Do Not Match" };
+        return { ...initialState, isError : true, message: "Passwords Do Not Match" };
     }
 
     const cookieStore = cookies();
-    const supabase = getServerClient(cookieStore);
+    const supabase = createClient(cookieStore);
     const { error } = await supabase.auth.updateUser({ password: formPassword1 }); 
 
     if( error ) {
-        return { isError : true, message: "Could Not Update Password" };
+        return { ...initialState, isError : true, message: error.message };
     }
 
-    return { isError : false, message: "Password Updated Successfully" }
+    return { ...initialState, isError: false, isRedirect: true, redirectUrl: "/dashboard", message: "Password Updated Successfully" }
 }

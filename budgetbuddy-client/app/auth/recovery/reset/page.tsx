@@ -9,17 +9,31 @@ import {
     FormLabel,
     Box,
     VStack,
-    Text
 } from "@chakra-ui/react";
 import { useFormState } from "react-dom";
 import resetPassword from "@/actions/auth/resetPassword";
 import FormAlert from "../../FormAlert";
 import SubmitButton from "../../components/SubmitButton";
-import { Link } from "@chakra-ui/next-js";
+import { FormResponse } from "@/types/FormResponse";
+import { useRouter } from "next/navigation";
 
 export default function ResetPasswordFormPage() {
 
-    const [ state, formAction ] = useFormState(resetPassword, { isError : false, message : "" });
+    const initialState : FormResponse<boolean> = {
+        isRedirect: false,
+        redirectUrl: "",
+        result: false,
+        isError: false,
+        message: "",
+    };
+
+    const [ state, formAction ] = useFormState(resetPassword, initialState );
+
+    const route = useRouter();
+    if( state.isRedirect ) {
+        route.push(state.redirectUrl);   
+    }
+
     return (
         <Container maxW='100%' height={'100vh'} paddingY={'20px'}>
             <Center width={'100%'} height={'100%'}>
@@ -39,7 +53,6 @@ export default function ResetPasswordFormPage() {
                                 <Input name="password2" type="password" />
                             </Box>
                             <SubmitButton />
-                            <Text><Link href='/'>Go to Dashboard</Link></Text>
                         </VStack>
                     </FormControl>
                 </form>
