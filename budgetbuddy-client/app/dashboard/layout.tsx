@@ -7,8 +7,8 @@ import { useRouter } from 'next/navigation';
 import { useState, useEffect} from 'react';
 import getUserProfile from "@/util/db/getUserProfile";
 import type { TypeUserProfile } from "@/util/db/getUserProfile";
-import signoutUser from "@/util/auth/signoutUser";
 import { ProfileContext } from './ProfileContext';
+import { createClient } from "@/util/supabase/client";
 
 export default function DashboardLayout({ children } : { children : React.ReactNode }) {
 
@@ -23,8 +23,9 @@ export default function DashboardLayout({ children } : { children : React.ReactN
     }, []);
 
     const router = useRouter();
-    const handleLogout = () => {
-        signoutUser();
+    const supabase = createClient();
+    const handleLogout = async () => {
+        await supabase.auth.signOut();
         router.push('/auth/login');
     }
 
