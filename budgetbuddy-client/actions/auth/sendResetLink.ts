@@ -3,8 +3,9 @@
 import { ZodError, z } from "zod"
 import { cookies } from "next/headers";
 import { getServerClient } from "@/util/getSupabaseClient";
+import { type FormResponse } from "@/types/FormResponse";
 
-export default async function sendResetLink( _ : any, formData : FormData ) {
+export default async function sendResetLink( initialState : FormResponse<boolean>, formData : FormData ) {
     
     const formEmail = formData.get('email') as string;
     const emailSchema = z.string().email();
@@ -13,19 +14,19 @@ export default async function sendResetLink( _ : any, formData : FormData ) {
         emailSchema.parse(formEmail);
     } catch (e) {
         if( e instanceof ZodError ) {
-            return { isError : true, messsage : "Invalid Email" }
+            return { ...initialState, isError : true, messsage : "Invalid Email" }
         } else {
-            return { isError : true, message : "Could Not Send Link. Please Try Again Later" }
+            return { ...initialState, isError : true, message : "Could Not Send Link. Please Try Again Later" }
         }
     }
 
     const cookieStore = cookies();
     const supabase = getServerClient(cookieStore);
-    const { error }  = await supabase.auth.resetPasswordForEmail( formEmail,  { redirectTo : "http://localhost:3000/auth/recovery/authenticate" });
+    const { error }  = await supabase.auth.resetPasswordForEmail( formEmail,  { redirectTo : `${process.env.APP_DOMAIN}/auth/recovery/authenticate`});
 
     if( error ) {
-        return { isError : true, message : "Could Not Send Email Link. Please Try Again Later" }
+        return { ...initialState, isError : true, message : "Could Not Send Email Link. Please Try Again Later" }
     }
 
-    return { isError : false, message : "Email Sent!" };
+    return { ...initialState, result: true, message : "Email Sent!" };
 }

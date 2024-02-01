@@ -95,6 +95,26 @@ insert into auth.users(
     '',
     '',
     ''
+),
+(
+
+    '00000000-0000-0000-0000-000000000000',
+    'c9f76812-c35f-49f7-af06-6462a3f0c355',
+    'authenticated',
+    'authenticated',
+    'alec.ntan@gmail.com',
+    crypt ('password123', gen_salt('bf')),
+    current_timestamp,
+    current_timestamp,
+    current_timestamp,
+    '{"provider":"email","providers":["email"]}',
+    '{}',
+    current_timestamp,
+    current_timestamp,
+    '',
+    '',
+    '',
+    ''
 );
 
 insert into public.profiles(
@@ -125,4 +145,10 @@ insert into public.profiles(
     'Yuji',
     'Itadori',
     'associate'
+),
+(
+    'c9f76812-c35f-49f7-af06-6462a3f0c355',
+    'Alec',
+    'Tan',
+    'admin'
 );

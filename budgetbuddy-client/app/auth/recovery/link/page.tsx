@@ -16,10 +16,19 @@ import { useFormState } from "react-dom";
 import sendResetLink from "@/actions/auth/sendResetLink";
 import FormAlert from "../../FormAlert";
 import SubmitButton from "../../components/SubmitButton";
+import { FormResponse } from "@/types/FormResponse";
 
 export default function ResetPasswordLinkPage() {
 
-    const [ state, formAction ] = useFormState(sendResetLink, { isError : false, message : "" });
+    const initialState : FormResponse<boolean> = {
+        isRedirect: false,
+        redirectUrl: "",
+        result: false,
+        isError: false,
+        message: ""
+    };
+
+    const [ state, formAction ] = useFormState(sendResetLink, initialState );
 
     return (
         <Container maxW='100%' height={'100vh'} paddingY={'20px'}>

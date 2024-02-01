@@ -1,4 +1,4 @@
-import { getServerClient } from "@/util/getSupabaseClient";
+import { createClient } from '@/util/supabase/actions';
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
@@ -8,9 +8,14 @@ export async function GET( request : Request ) {
 
     if( code ) {
         const cookieStore = cookies();
-        const supabaseClient = getServerClient(cookieStore);
-        await supabaseClient.auth.exchangeCodeForSession(code);
-    }
-    
-    return NextResponse.redirect(new URL("/auth/recovery/reset", requestUrl.origin));
+        const supabaseClient = createClient(cookieStore);
+        const { error } = await supabaseClient.auth.exchangeCodeForSession(code);
+        if( error ) {
+            return NextResponse.redirect(new URL("/error", requestUrl.origin));
+        }
+        return NextResponse.redirect(new URL("/auth/recovery/reset", requestUrl.origin));
+    } 
+
+    return NextResponse.redirect(new URL("/error", requestUrl.origin));
+
 }

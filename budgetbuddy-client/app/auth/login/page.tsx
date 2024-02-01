@@ -17,7 +17,6 @@ import loginAction from "@/actions/auth/loginAction";
 import FormAlert from "../FormAlert";
 import SubmitButton from "../components/SubmitButton";
 import { FormResponse } from "@/types/FormResponse";
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
