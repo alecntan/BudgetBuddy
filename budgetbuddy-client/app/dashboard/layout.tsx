@@ -5,14 +5,15 @@ import { HiOutlineLogout } from 'react-icons/hi';
 import { GoChevronDown } from 'react-icons/go';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect} from 'react';
-import getUserProfile from "@/util/db/getUserProfile";
-import type { TypeUserProfile } from "@/util/db/getUserProfile";
 import { ProfileContext } from './ProfileContext';
 import { createClient } from "@/util/supabase/client";
+import getUserProfile from "@/actions/profiles/getUserProfile";
+import type { UserProfile } from "@/types/budgetbuddy";
+
 
 export default function DashboardLayout({ children } : { children : React.ReactNode }) {
 
-    const [ UserProfile, setUserProfile ] = useState<TypeUserProfile | null >(null);
+    const [ UserProfile, setUserProfile ] = useState<UserProfile | null >(null);
 
     useEffect( () => {
         const loadUserProfile = async () => {

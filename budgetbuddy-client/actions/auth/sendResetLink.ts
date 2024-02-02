@@ -3,7 +3,7 @@
 import { ZodError, z } from "zod"
 import { cookies } from "next/headers";
 import { createClient } from '@/util/supabase/actions';
-import { type FormResponse } from "@/types/FormResponse";
+import { type FormResponse } from "@/types/budgetbuddy";
 
 export default async function sendResetLink( initialState : FormResponse<boolean>, formData : FormData ) {
     

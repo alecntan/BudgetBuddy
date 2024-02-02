@@ -16,7 +16,7 @@ import { useFormState } from "react-dom";
 import sendResetLink from "@/actions/auth/sendResetLink";
 import FormAlert from "../../FormAlert";
 import SubmitButton from "../../components/SubmitButton";
-import { FormResponse } from "@/types/FormResponse";
+import type { FormResponse } from "@/types/budgetbuddy";
 
 export default function ResetPasswordLinkPage() {
 

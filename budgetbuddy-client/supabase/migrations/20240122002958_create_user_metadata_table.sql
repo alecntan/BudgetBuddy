@@ -7,9 +7,9 @@ create type role as enum (
 
 create table public.profiles (
     id uuid not null references auth.users on delete cascade,
-    first_name text,
-    last_name text,
-    user_role role,
+    first_name text not null,
+    last_name text not null,
+    user_role role not null,
 
     primary key (id)
 );

@@ -14,7 +14,7 @@ import { useFormState } from "react-dom";
 import resetPassword from "@/actions/auth/resetPassword";
 import FormAlert from "../../FormAlert";
 import SubmitButton from "../../components/SubmitButton";
-import { FormResponse } from "@/types/FormResponse";
+import { FormResponse } from "@/types/budgetbuddy";
 import { useRouter } from "next/navigation";
 
 export default function ResetPasswordFormPage() {

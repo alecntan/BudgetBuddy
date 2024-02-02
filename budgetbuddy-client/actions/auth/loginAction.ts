@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { ZodError, z } from "zod";
 
 import { createClient } from '@/util/supabase/actions';
-import { FormResponse } from "@/types/FormResponse";
+import { FormResponse } from "@/types/budgetbuddy";
 
 export default async function loginAction( initialState: FormResponse<null>, formData : FormData ) {
 

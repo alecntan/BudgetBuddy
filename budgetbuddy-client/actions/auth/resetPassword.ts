@@ -1,7 +1,7 @@
 'use server'
 
 import { cookies } from "next/headers";
-import { FormResponse } from "@/types/FormResponse";
+import { FormResponse } from "@/types/budgetbuddy";
 import { createClient } from "@/util/supabase/actions";
 
 export default async function resetPassword( initialState : FormResponse<boolean>, formData : FormData ) {
