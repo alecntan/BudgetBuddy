@@ -14,8 +14,12 @@ create table public.profiles (
     primary key (id)
 );
 
+
+
 alter table public.profiles enable row level security;
 
-create policy "User can see their own profile only."
-on profiles
-for select using ( auth.uid() = id );
+create policy "User can see their own profile only." on profiles 
+for select to authenticated
+using ( auth.uid() = id );
+
+
