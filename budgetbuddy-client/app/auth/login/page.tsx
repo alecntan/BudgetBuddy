@@ -18,6 +18,7 @@ import FormAlert from "../FormAlert";
 import SubmitButton from "../components/SubmitButton";
 import { FormResponse } from "@/types/budgetbuddy";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function LoginPage() {
 
@@ -32,9 +33,11 @@ export default function LoginPage() {
     const [ state, formAction ] = useFormState( loginAction, initialState );
     const router = useRouter();
 
-    if( state.isRedirect ) {
-        router.push(state.redirectUrl);
-    }
+    useEffect(()=>{
+        if( state.isRedirect ) {
+            router.push(state.redirectUrl);
+        }    
+    });
 
     return (
         <Container maxW='100%' height={'100vh'} paddingY={'20px'}>

@@ -16,6 +16,7 @@ import FormAlert from "../../FormAlert";
 import SubmitButton from "../../components/SubmitButton";
 import { FormResponse } from "@/types/budgetbuddy";
 import { useRouter } from "next/navigation";
+import { useEffect } from 'react';
 
 export default function ResetPasswordFormPage() {
 
@@ -28,12 +29,13 @@ export default function ResetPasswordFormPage() {
     };
 
     const [ state, formAction ] = useFormState(resetPassword, initialState );
-
     const route = useRouter();
-    if( state.isRedirect ) {
-        route.push(state.redirectUrl);   
-    }
-
+    useEffect(()=>{
+        if( state.isRedirect ) {
+            route.push(state.redirectUrl);   
+        }
+    }); 
+    
     return (
         <Container maxW='100%' height={'100vh'} paddingY={'20px'}>
             <Center width={'100%'} height={'100%'}>
