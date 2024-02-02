@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION is_admin() RETURNS "bool"
+CREATE OR REPLACE FUNCTION is_claims_admin() RETURNS "bool"
   LANGUAGE "plpgsql" 
   AS $$
   BEGIN
@@ -15,7 +15,7 @@ CREATE OR REPLACE FUNCTION is_admin() RETURNS "bool"
       If current_setting('request.jwt.claims', true)::jsonb->>'role' = 'service_role' THEN
         RETURN true; -- service role users have admin rights
       END IF;
-      IF coalesce((current_setting('request.jwt.claims', true)::jsonb)->'app_metadata'->'budget_buddy_role', 'admin')::bool THEN
+      IF coalesce((current_setting('request.jwt.claims', true)::jsonb)->'app_metadata'->'claims_admin', 'false')::bool THEN
         return true; -- user has claims_admin set to true
       ELSE
         return false; -- user does NOT have claims_admin set to true
@@ -47,7 +47,7 @@ CREATE OR REPLACE FUNCTION get_claims(uid uuid) RETURNS "jsonb"
     AS $$
     DECLARE retval jsonb;
     BEGIN
-      IF NOT is_admin() THEN
+      IF NOT is_claims_admin() THEN
           RETURN '{"error":"access denied"}'::jsonb;
       ELSE
         select raw_app_meta_data from auth.users into retval where id = uid::uuid;
@@ -61,7 +61,7 @@ CREATE OR REPLACE FUNCTION get_claim(uid uuid, claim text) RETURNS "jsonb"
     AS $$
     DECLARE retval jsonb;
     BEGIN
-      IF NOT is_admin() THEN
+      IF NOT is_claims_admin() THEN
           RETURN '{"error":"access denied"}'::jsonb;
       ELSE
         select coalesce(raw_app_meta_data->claim, null) from auth.users into retval where id = uid::uuid;
@@ -74,7 +74,7 @@ CREATE OR REPLACE FUNCTION set_claim(uid uuid, claim text, value jsonb) RETURNS 
     LANGUAGE "plpgsql" SECURITY DEFINER SET search_path = public
     AS $$
     BEGIN
-      IF NOT is_admin() THEN
+      IF NOT is_claims_admin() THEN
           RETURN 'error: access denied';
       ELSE        
         update auth.users set raw_app_meta_data = 
@@ -89,7 +89,7 @@ CREATE OR REPLACE FUNCTION delete_claim(uid uuid, claim text) RETURNS "text"
     LANGUAGE "plpgsql" SECURITY DEFINER SET search_path = public
     AS $$
     BEGIN
-      IF NOT is_admin() THEN
+      IF NOT is_claims_admin() THEN
           RETURN 'error: access denied';
       ELSE        
         update auth.users set raw_app_meta_data = 
@@ -100,7 +100,9 @@ CREATE OR REPLACE FUNCTION delete_claim(uid uuid, claim text) RETURNS "text"
 $$;
 NOTIFY pgrst, 'reload schema';
 
+
+
 create policy "Admins can see all Profiles." on profiles
 for select to authenticated
-using ( is_admin() );
+using ( get_my_claim('budget_buddy_role') = '"admin"' );
 
