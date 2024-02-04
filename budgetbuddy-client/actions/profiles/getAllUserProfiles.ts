@@ -11,10 +11,8 @@ export default async function getAllUserProfiles(from : number , to: number )  {
     const { data, error } = await supabase.from('profiles').select().range(from, to);
 
     if( error ) {
-        console.log(error);
         return [];
     }
-    console.log(data);
     return data as Array<UserProfile>;
 }
 
