@@ -14,12 +14,15 @@ create table public.profiles (
     primary key (id)
 );
 
-
-
 alter table public.profiles enable row level security;
 
 create policy "User can see their own profile only." on profiles 
 for select to authenticated
 using ( auth.uid() = id );
+
+-- Create computed column for user search
+create function firstname_lastname(profiles) returns text as $$
+    select $1.first_name || ' ' || $1.last_name;
+$$ language sql immutable;
 
 

@@ -36,11 +36,11 @@ export default function UserPage() {
         }
     }
 
-    const [ searchQuery, setSearchQuery ] = useState<string>("");
-    const handleOnSearch = ( searchParams: string ) => {
-        setSearchQuery(searchParams);
+    const [ searchQuery, setSearchQuery ] = useState<{ name : string; roles: ( string | number )[]}>({ name : "", roles: ["admin", "director", "manager", "associate"]});
+    const handleOnSearch = ( params : { name : string; roles: ( string | number )[] }) => {
+        setSearchQuery(params);
     };
-
+    
     useEffect(() => {
      const getNumOfUsers = async () => {
             const count = await getNumUsers();
@@ -55,7 +55,6 @@ export default function UserPage() {
             setAllUsers(users);
         };
        getAllUsers();
-       console.log(searchQuery);
     }, [startingIndex, searchQuery ]);
 
     return (

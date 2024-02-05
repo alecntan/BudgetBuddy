@@ -13,7 +13,7 @@ Stack,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 
-const SearchUsers = ({ onSubmit } : { onSubmit : ( searcParams : string ) => void }) => {
+const SearchUsers = ({ onSubmit } : { onSubmit : ( searchParams : { name : string; roles: ( string | number )[] } ) => void }) => {
 
     const [ inputValue, setInputValue ] = useState<string>("");
     const handleInputChange = ( e : React.ChangeEvent<HTMLInputElement> ) => {
@@ -23,11 +23,13 @@ const SearchUsers = ({ onSubmit } : { onSubmit : ( searcParams : string ) => voi
     const [ checkboxValues, setCheckboxValues ] = useState<(string | number)[]>(['admin', 'director', 'manager', 'associate'])
 
     const handleSubmit = () => {  
-        const tokens = inputValue.trim().split(" ");   
-        const allTokens = checkboxValues.concat(tokens);
-        const allTokensWithQuotes = allTokens.map((token) => {return `'${token}'`});
-        const searchString = allTokensWithQuotes.join(" | ");
-        onSubmit(searchString);
+        let searchString = "";
+        if( inputValue !== "" ) {
+            const tokens = inputValue.trim().split(" ");   
+            const allTokensWithQuotes = tokens.map((token) => {return `'${token}'`});
+            searchString = allTokensWithQuotes.join(" | ");
+        }
+        onSubmit({ name : searchString, roles : checkboxValues });
     };
 
     return (

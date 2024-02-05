@@ -4,26 +4,36 @@ import { cookies } from 'next/headers';
 import { createClient } from '@/util/supabase/actions';
 import type { UserProfile } from '@/types/budgetbuddy';
 
-export default async function getAllUserProfiles(searchParams : string, from : number , offset : number )  {
+export default async function getAllUserProfiles( searchParams : { name: string; roles: ( string | number )[] }, from : number , offset : number )  {
 
     const cookieStore = cookies();
     const supabase = createClient(cookieStore);
     let result : Array<UserProfile> = [];
-    if( searchParams === "") {
+    if( searchParams.name.length === 0 && searchParams.roles.length === 4 ) {
         const { data, error } =  await supabase.from('profiles').select().range(from, offset);
         if( error ) {
             return [];
         }
         result = data as Array<UserProfile>;
+    } else if( searchParams.name.length === 0 ) {
+        const { data, error } = await supabase.from('profiles').select().in('user_role', searchParams.roles ).range(from, offset);
+        if( error ) {
+            return [];
+        }
+        result = data as Array<UserProfile>;
+    } else if ( searchParams.roles.length === 4 ) {
+        const { data, error } = await supabase.from('profiles').select().textSearch('firstname_lastname', searchParams.name).range(from, offset);
+        if( error ) {
+            return [];
+        }
+        result = data as Array<UserProfile>;
     } else {
-        const { data, error } = await supabase.from('profiles').select().textSearch('first_name', searchParams ).textSearch('last_name', searchParams).range(from, offset );
-        console.log(`Searching with query: ${searchParams}. Result: ${data}`);
+        const { data, error } = await supabase.from('profiles').select().textSearch('firstname_lastname', searchParams.name ).in('user_role', searchParams.roles).range(from, offset );
         if( error ) {
             return [];
         }
         result = data as Array<UserProfile>;
     }
-    console.log(result); 
     return result;
 }
 
