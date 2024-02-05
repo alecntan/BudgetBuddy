@@ -15,6 +15,7 @@ import getNumUsers from "@/actions/profiles/getNumOfUsers";
 import { UserProfile } from "@/types/budgetbuddy";
 import UserList from "./UserList";
 import PaginationControl from './PaginationControls';
+import  SearchUsers  from "./SearchUsers";
 
 export default function UserPage() {
 
@@ -35,6 +36,11 @@ export default function UserPage() {
         }
     }
 
+    const [ searchQuery, setSearchQuery ] = useState<string>("");
+    const handleOnSearch = ( searchParams: string ) => {
+        setSearchQuery(searchParams);
+    };
+
     useEffect(() => {
      const getNumOfUsers = async () => {
             const count = await getNumUsers();
@@ -45,20 +51,22 @@ export default function UserPage() {
 
     useEffect(() => {
         const getAllUsers = async () => {
-            const users = await getAllUserProfiles(startingIndex, startingIndex + NUM_USER_PER_PAGE - 1);
+            const users = await getAllUserProfiles( searchQuery, startingIndex, startingIndex + NUM_USER_PER_PAGE - 1);
             setAllUsers(users);
         };
        getAllUsers();
-    }, [startingIndex]);
+       console.log(searchQuery);
+    }, [startingIndex, searchQuery ]);
 
     return (
         <Flex flexDirection={'column'} width={'100%'}>
-            <Card width={'100%'} borderRadius={'10px'} variant={'elevated'}>
+            <Card marginBottom={'10px'} width={'100%'} borderRadius={'10px'} variant={'elevated'}>
                 <CardHeader>
                 <Heading size={'sm'} marginBottom={'5px'}>Team Members</Heading>
                     <Text>{"Invite or manage your organisation's team members"}</Text>
                 </CardHeader>
             </Card>
+            <SearchUsers onSubmit={handleOnSearch} />
             <UserList title={'Members'} users={allUsers} />
             <PaginationControl startIndex={startingIndex} offset={NUM_USER_PER_PAGE} onLeftClick={handleLeftClick} onRightClick={handleRightClick} />
         </Flex>

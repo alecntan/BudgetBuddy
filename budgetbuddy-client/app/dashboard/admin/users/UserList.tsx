@@ -1,3 +1,5 @@
+"use client"
+
 import { UserProfile, UserRole } from "@/types/budgetbuddy";
 import { 
 Flex,
