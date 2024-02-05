@@ -15,12 +15,13 @@ import { useState } from 'react';
 
 const SearchUsers = ({ onSubmit } : { onSubmit : ( searchParams : { name : string; roles: ( string | number )[] } ) => void }) => {
 
-    const [ inputValue, setInputValue ] = useState<string>("");
+    const initialInputValue = "";
+    const [ inputValue, setInputValue ] = useState<string>(initialInputValue);
     const handleInputChange = ( e : React.ChangeEvent<HTMLInputElement> ) => {
             setInputValue(e.target.value);
     };
-
-    const [ checkboxValues, setCheckboxValues ] = useState<(string | number)[]>(['admin', 'director', 'manager', 'associate'])
+    const initialCheckboxValues = ['admin', 'director', 'manager', 'associate'];
+    const [ checkboxValues, setCheckboxValues ] = useState<(string | number)[]>(initialCheckboxValues);
 
 
     const handleSubmit = () => {  
@@ -34,9 +35,9 @@ const SearchUsers = ({ onSubmit } : { onSubmit : ( searchParams : { name : strin
     };
 
     const handleReset = () => {
-        setInputValue("");
-        setCheckboxValues(['admin',  'director', 'manager', 'associate']);
-        onSubmit({ name : "", roles: [ "admin", "director", "manager", "associate" ]});
+        setInputValue(initialInputValue);
+        setCheckboxValues(initialCheckboxValues);
+        onSubmit({ name : initialInputValue, roles: initialCheckboxValues});
     };
 
     return (
