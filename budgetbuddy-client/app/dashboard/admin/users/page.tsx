@@ -43,11 +43,11 @@ export default function UserPage() {
     
     useEffect(() => {
      const getNumOfUsers = async () => {
-            const count = await getNumUsers();
+            const count = await getNumUsers(searchQuery);
             setNumOfUsers(count);
         };
         getNumOfUsers();
-    });
+    }, [searchQuery]);
 
     useEffect(() => {
         const getAllUsers = async () => {
