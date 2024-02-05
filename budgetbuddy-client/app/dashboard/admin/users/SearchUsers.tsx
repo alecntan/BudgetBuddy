@@ -22,6 +22,7 @@ const SearchUsers = ({ onSubmit } : { onSubmit : ( searchParams : { name : strin
 
     const [ checkboxValues, setCheckboxValues ] = useState<(string | number)[]>(['admin', 'director', 'manager', 'associate'])
 
+
     const handleSubmit = () => {  
         let searchString = "";
         if( inputValue !== "" ) {
@@ -32,6 +33,12 @@ const SearchUsers = ({ onSubmit } : { onSubmit : ( searchParams : { name : strin
         onSubmit({ name : searchString, roles : checkboxValues });
     };
 
+    const handleReset = () => {
+        setInputValue("");
+        setCheckboxValues(['admin',  'director', 'manager', 'associate']);
+        onSubmit({ name : "", roles: [ "admin", "director", "manager", "associate" ]});
+    };
+
     return (
         <Card width={'100%'} borderRadius={'10px'} variant={'elevated'}>
             <CardBody>
@@ -40,14 +47,17 @@ const SearchUsers = ({ onSubmit } : { onSubmit : ( searchParams : { name : strin
                     <Input value={inputValue} onChange={handleInputChange} width={'100%'} />
                     <Button onClick={handleSubmit} marginLeft={'5px'}>Search</Button>
                 </Flex>
-                <CheckboxGroup defaultValue={checkboxValues} onChange={setCheckboxValues}>
-                    <Stack spacing={[1, 5]} direction={['column', 'row']} marginTop={'10px'}>
-                        <Checkbox value={'admin'}>Admin</Checkbox>
-                        <Checkbox value={'director'}>Director</Checkbox>
-                        <Checkbox value={'manager'}>Manager</Checkbox>
-                        <Checkbox value={'associate'}>Associate</Checkbox>
-                    </Stack>
-                </CheckboxGroup>
+                <Flex marginTop={'10px'} width={'100%'} justifyContent={'space-between'} alignItems={'flex-end'}>
+                     <CheckboxGroup defaultValue={checkboxValues} value={checkboxValues} onChange={setCheckboxValues}>
+                        <Stack spacing={[1, 5]} direction={['column', 'row']} marginTop={'10px'}>
+                            <Checkbox value={'admin'}>Admin</Checkbox>
+                            <Checkbox value={'director'}>Director</Checkbox>
+                            <Checkbox value={'manager'}>Manager</Checkbox>
+                            <Checkbox value={'associate'}>Associate</Checkbox>
+                        </Stack>
+                    </CheckboxGroup>
+                    <Button size={'sm'} variant={'ghost'} onClick={handleReset} marginRight={'10px'} >Reset</Button>
+                </Flex>
             </CardBody>
         </Card>
     );
