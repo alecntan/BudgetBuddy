@@ -106,3 +106,4 @@ create policy "Admins can see all Profiles." on profiles
 for select to authenticated
 using ( get_my_claim('budget_buddy_role') = '"admin"' );
 
+

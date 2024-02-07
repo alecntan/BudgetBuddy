@@ -24,5 +24,3 @@ using ( auth.uid() = id );
 create function firstname_lastname(profiles) returns text as $$
     select $1.first_name || ' ' || $1.last_name;
 $$ language sql immutable;
-
-

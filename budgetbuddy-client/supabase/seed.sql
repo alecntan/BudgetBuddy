@@ -27,8 +27,8 @@ insert into auth.users(
     current_timestamp,
     current_timestamp,
     current_timestamp,
-    '{ "provider":"email","providers":["email"], "claims_admin" : true, "budget_buddy_role" : "admin" }',
-    '{}',
+    '{ "provider":"email","providers":["email"], "claims_admin" : true }',
+    jsonb_build_object('first_name', 'John', 'last_name' , 'Smith', 'user_role', 'admin'),
     current_timestamp,
     current_timestamp,
     '',
@@ -39,7 +39,7 @@ insert into auth.users(
 (
 
     '00000000-0000-0000-0000-000000000000',
-	'938c7190-1cac-4079-a955-c255d641ccf2',
+	'64ef5345-21a6-44d8-989b-d4816ce04dde',
     'authenticated',
     'authenticated',
     'director@example.com',
@@ -47,19 +47,18 @@ insert into auth.users(
     current_timestamp,
     current_timestamp,
     current_timestamp,
-    '{"provider":"email","providers":["email"]}',
-    '{}',
+    '{ "provider":"email","providers":["email"]}',
+    jsonb_build_object('first_name', 'Kento', 'last_name' , 'Nanamin', 'user_role', 'director'),
     current_timestamp,
     current_timestamp,
     '',
     '',
     '',
     ''
-),
-(
+),(
 
     '00000000-0000-0000-0000-000000000000',
-    '986ebb20-e9a9-4f0c-826b-4f3d2c37e4a9',
+	'63ef5345-21a6-44d8-989b-d4816ce04dde',
     'authenticated',
     'authenticated',
     'manager@example.com',
@@ -67,19 +66,18 @@ insert into auth.users(
     current_timestamp,
     current_timestamp,
     current_timestamp,
-    '{"provider":"email","providers":["email"]}',
-    '{}',
+    '{ "provider":"email","providers":["email"]}',
+    jsonb_build_object('first_name', 'Yuta', 'last_name' , 'Okkotsu', 'user_role', 'manager'),
     current_timestamp,
     current_timestamp,
     '',
     '',
     '',
     ''
-),
-(
+),(
 
     '00000000-0000-0000-0000-000000000000',
-    'b3edfe7c-80f9-45d5-bec6-b2b693038eb5',
+	'62ef5345-21a6-44d8-989b-d4816ce04dde',
     'authenticated',
     'authenticated',
     'associate@example.com',
@@ -87,68 +85,12 @@ insert into auth.users(
     current_timestamp,
     current_timestamp,
     current_timestamp,
-    '{"provider":"email","providers":["email"]}',
-    '{}',
+    '{ "provider":"email","providers":["email"]}',
+    jsonb_build_object('first_name', 'Yuji', 'last_name' , 'Itadori', 'user_role', 'associate'),
     current_timestamp,
     current_timestamp,
     '',
     '',
     '',
     ''
-),
-(
-
-    '00000000-0000-0000-0000-000000000000',
-    'c9f76812-c35f-49f7-af06-6462a3f0c355',
-    'authenticated',
-    'authenticated',
-    'alec.ntan@gmail.com',
-    crypt ('password123', gen_salt('bf')),
-    current_timestamp,
-    current_timestamp,
-    current_timestamp,
-    '{"provider":"email","providers":["email"], "claims_admin" : true, "budget_buddy_role" : "admin" }',
-    '{}',
-    current_timestamp,
-    current_timestamp,
-    '',
-    '',
-    '',
-    ''
-);
-
-insert into public.profiles(
-    id,
-    first_name,
-    last_name,
-    user_role
-) values (
-	'65ef5345-21a6-44d8-989b-d4816ce04dde',
-    'John',
-    'Smith',
-    'admin'
-),
-(
-	'938c7190-1cac-4079-a955-c255d641ccf2',
-    'Kento',
-    'Nanamin',
-    'director'
-),
-(
-    '986ebb20-e9a9-4f0c-826b-4f3d2c37e4a9',
-    'Yuta',
-    'Okkotsu',
-    'manager'
-),
-(
-    'b3edfe7c-80f9-45d5-bec6-b2b693038eb5',
-    'Yuji',
-    'Itadori',
-    'associate'
-),
-(
-    'c9f76812-c35f-49f7-af06-6462a3f0c355',
-    'Alec',
-    'Tan',
-    'admin'
 );
