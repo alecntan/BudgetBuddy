@@ -11,7 +11,10 @@ as $$
     end;
 $$;
 
-create or replace function public.handle_new_profile () returns trigger language plpgsql security definer
+create or replace function public.handle_new_profile () 
+returns trigger 
+language plpgsql 
+security definer
 set
   search_path = public as $$
   begin

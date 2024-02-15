@@ -1,17 +1,17 @@
 "use server"
 
-import { cookies } from 'next/headers';
 import { ZodError, z } from 'zod';
 
+import { cookies } from 'next/headers';
+import { createClient as createActionClient } from '@/util/supabase/actions';
 import { createClient } from '@supabase/supabase-js';
 import { FormResponse, UserRole } from '@/types/budgetbuddy';
 
 
-export default async function signupAction( 
+export default async function inviteAction( 
     _ : any,
     formData: FormData 
 ) {
-
 
     const basicResult : FormResponse<boolean>= {
         isRedirect: false,
@@ -20,6 +20,19 @@ export default async function signupAction(
         isError: false,
         message: ""
     };
+
+    const cookieStore = cookies();
+    const supabase = createActionClient(cookieStore);
+    const { data: isAdmin, error: actionError } = await supabase.rpc('is_budget_buddy_admin');
+    console.log(isAdmin);
+    
+    if( actionError ) {
+        return { ...basicResult, isError: true, message: "Could not invite user. Please try again later" };        
+    }
+
+    if( !isAdmin ) {
+        return { ...basicResult, isError: true, message: "Access Denied" };
+    }
 
     const formFirstName = formData.get('first_name') as string;
     const formLastName = formData.get('last_name') as string;
@@ -41,24 +54,17 @@ export default async function signupAction(
         if ( e instanceof ZodError ) {
             return { ...basicResult, isError: true, message: `${e.issues[0].message}`}
         } else {
-            return { ...basicResult, isError: true, message : "Could not invite users. Please try again later"};
+            return { ...basicResult, isError: true, message : "Could not invite users. Please try again later" };
         }
     }
 
-    const supabase = createClient( process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SERVICE_ROLE_KEY!, { auth: {
+    const supabaseAdmin = createClient( process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SERVICE_ROLE_KEY!, { auth: {
         autoRefreshToken: false,
         persistSession: false
     }});
 
-    const { error } = await supabase.auth.admin.createUser({ 
-        email: formEmail, 
-        password: formPassword, 
-        user_metadata : { 
-            first_name: formFirstName,
-            last_name: formLastName,
-            user_role: userRole
-        }
-    });
+    const { error } = await supabaseAdmin.auth.admin.inviteUserByEmail(formEmail, { data: { first_name : formFirstName, last_name: formLastName, user_role: userRole }});
+
     if( error ) {
         return { ...basicResult, isError: true, message: error.message }; 
     }     

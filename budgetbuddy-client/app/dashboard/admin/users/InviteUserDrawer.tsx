@@ -20,7 +20,7 @@ Radio,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { FormResponse } from '@/types/budgetbuddy';
-import signupAction from "@/actions/auth/signupAction";
+import inviteAction from "@/actions/auth/inviteAction";
 import { useFormState } from "react-dom";
 import FormAlert from "@/app/auth/FormAlert";
 
@@ -35,7 +35,7 @@ const InviteUserDrawer = ({ show, toggleShow, onSuccess } : { show : boolean, to
         message: ""
     };
     const [ userRole, setUserRole ] = useState<string>('associate');
-    const [ state, formAction ] = useFormState( signupAction, initialState);
+    const [ state, formAction ] = useFormState( inviteAction, initialState);
 
     return (
         <Drawer
