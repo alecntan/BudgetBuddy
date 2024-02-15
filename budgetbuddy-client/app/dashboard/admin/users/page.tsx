@@ -24,17 +24,12 @@ import { FaUserPlus } from 'react-icons/fa';
 
 export default function UserPage() {
 
-    const [ newUserFlag, setNewUserFlag ] = useState<boolean>(false);
-    const handleNewUser = () => {
-        setNewUserFlag((flag : boolean ) => !flag);
-    };
-
-
     const [ allUsers, setAllUsers ] = useState<Array<UserProfile>>([]);
     const [ numOfUsers, setNumOfUsers ] = useState<number>(0);
     const [ startingIndex, setStartingIndex ] = useState<number>(0);
     const NUM_USER_PER_PAGE = 10;
 
+    
     const handleLeftClick = () => {
         if( startingIndex >= NUM_USER_PER_PAGE ) {
             setStartingIndex((currIndex) => currIndex - NUM_USER_PER_PAGE);
@@ -47,7 +42,9 @@ export default function UserPage() {
         }
     }
 
-    const [ searchQuery, setSearchQuery ] = useState<{ name : string; roles: ( string | number )[]}>({ name : "", roles: ["admin", "director", "manager", "associate"]});
+
+    const initialSearchQuery = { name : "", roles: ["admin", "director", "manager", "associate"]};
+    const [ searchQuery, setSearchQuery ] = useState<{ name : string; roles: ( string | number )[]}>(initialSearchQuery);
     const handleOnSearch = ( params : { name : string; roles: ( string | number )[] }) => {
         setSearchQuery(params);
     };
@@ -57,9 +54,8 @@ export default function UserPage() {
             const count = await getNumUsers(searchQuery);
             setNumOfUsers(count);
         };
-        console.log('Fetching Num of Users');
         getNumOfUsers();
-    }, [searchQuery, newUserFlag]);
+    }, [searchQuery]);
 
     useEffect(() => {
         const getAllUsers = async () => {
@@ -67,11 +63,9 @@ export default function UserPage() {
             setAllUsers(users);
         };
 
-        console.log('Fetching Users');
        getAllUsers();
-    }, [startingIndex, searchQuery, newUserFlag]);
+    }, [startingIndex, searchQuery]);
 
-    
     const { isOpen, onToggle } = useDisclosure();
 
     return (
@@ -90,7 +84,7 @@ export default function UserPage() {
             <SearchUsers onSubmit={handleOnSearch} />
             <UserList title={'Members'} users={allUsers} />
             <PaginationControl startIndex={startingIndex} offset={NUM_USER_PER_PAGE} onLeftClick={handleLeftClick} onRightClick={handleRightClick} />
-            <InviteUserDrawer show={isOpen} toggleShow={onToggle} onSuccess={handleNewUser} />
+            <InviteUserDrawer show={isOpen} toggleShow={onToggle} />
         </Flex>
     );
 }

@@ -24,7 +24,7 @@ import inviteAction from "@/actions/auth/inviteAction";
 import { useFormState } from "react-dom";
 import FormAlert from "@/app/auth/FormAlert";
 
-const InviteUserDrawer = ({ show, toggleShow, onSuccess } : { show : boolean, toggleShow : () => void, onSuccess: () => void }) => {
+const InviteUserDrawer = ({ show, toggleShow } : { show : boolean, toggleShow : () => void }) => {
 
 
     const initialState : FormResponse<boolean> = {
@@ -67,11 +67,6 @@ const InviteUserDrawer = ({ show, toggleShow, onSuccess } : { show : boolean, to
                                     <FormLabel>Email</FormLabel>
                                     <Input name="email" type={'email'} />
                                 </Box>
-                                <Box width={'100%'}>
-                                    <FormLabel>Password</FormLabel>
-                                    <Input name="password" type={'password'} />
-                                </Box>
-
                                 <RadioGroup name={'user_role'} onChange={setUserRole} value={userRole}>
                                     <FormLabel>User Role</FormLabel>
                                     <HStack spacing={'30px'}>
@@ -84,7 +79,7 @@ const InviteUserDrawer = ({ show, toggleShow, onSuccess } : { show : boolean, to
                             </VStack>
                             <Flex marginTop={'100px'} width={'100%'} justifyContent={'flex-end'} alignItems={'center'} >
                                 <Button onClick={toggleShow} size={'sm'} marginRight={'10px'}>Cancel</Button> 
-                                <Button onClick={onSuccess} size={'sm'} colorScheme={'teal'} type={'submit'}>Invite User</Button>
+                                <Button size={'sm'} colorScheme={'teal'} type={'submit'}>Invite User</Button>
                             </Flex>
                         </FormControl>
                     </form>

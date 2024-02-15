@@ -71,5 +71,5 @@ export default async function inviteAction(
         return { ...basicResult, isError: true, message: error.message }; 
     }     
 
-    return { ...basicResult, result: true, isError: false, message: "User Invited Successfully" };
+    return { ...basicResult, result: true , isError: false, message: "User Invited Successfully" };
 }

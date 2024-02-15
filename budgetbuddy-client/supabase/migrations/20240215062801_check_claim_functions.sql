@@ -1,4 +1,4 @@
-alter default priveleges revoke execute on functions from public;
+alter default privileges revoke execute on functions from public;
 
 create or replace function is_budget_buddy_admin() returns "bool"
 language "plpgsql" as $$
@@ -35,7 +35,7 @@ language "plpgsql" as $$
     begin
         return get_my_claim('budget_buddy_role') = "'associate'";
     end;
-$$
+$$;
 
 grant execute on function is_budget_buddy_associate to authenticated;
 grant execute on function is_budget_buddy_associate to service_role;
