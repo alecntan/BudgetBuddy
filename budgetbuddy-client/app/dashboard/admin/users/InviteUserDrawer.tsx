@@ -23,6 +23,7 @@ import { FormResponse } from '@/types/budgetbuddy';
 import inviteAction from "@/actions/auth/inviteAction";
 import { useFormState } from "react-dom";
 import FormAlert from "@/app/auth/FormAlert";
+import SubmitButton from '@/components/SubmitButton';
 
 const InviteUserDrawer = ({ show, toggleShow } : { show : boolean, toggleShow : () => void }) => {
 
@@ -79,7 +80,7 @@ const InviteUserDrawer = ({ show, toggleShow } : { show : boolean, toggleShow : 
                             </VStack>
                             <Flex marginTop={'100px'} width={'100%'} justifyContent={'flex-end'} alignItems={'center'} >
                                 <Button onClick={toggleShow} size={'sm'} marginRight={'10px'}>Cancel</Button> 
-                                <Button size={'sm'} colorScheme={'teal'} type={'submit'}>Invite User</Button>
+                                <SubmitButton size={'sm'} />
                             </Flex>
                         </FormControl>
                     </form>

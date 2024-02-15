@@ -13,7 +13,7 @@ import {
 import { useFormState } from "react-dom";
 import resetPassword from "@/actions/auth/resetPassword";
 import FormAlert from "../../FormAlert";
-import SubmitButton from "../../components/SubmitButton";
+import SubmitButton from "@/components/SubmitButton";
 import { FormResponse } from "@/types/budgetbuddy";
 import { useRouter } from "next/navigation";
 import { useEffect } from 'react';
@@ -54,7 +54,7 @@ export default function ResetPasswordFormPage() {
                                 <FormLabel>Verify Password</FormLabel>
                                 <Input name="password2" type="password" />
                             </Box>
-                            <SubmitButton />
+                            <SubmitButton width={'100%'} />
                         </VStack>
                     </FormControl>
                 </form>

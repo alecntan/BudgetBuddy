@@ -15,7 +15,7 @@ import {
 import { useFormState } from "react-dom";
 import loginAction from "@/actions/auth/loginAction";
 import FormAlert from "../FormAlert";
-import SubmitButton from "../components/SubmitButton";
+import SubmitButton from "@/components/SubmitButton";
 import { FormResponse } from "@/types/budgetbuddy";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -57,7 +57,7 @@ export default function LoginPage() {
                             <FormLabel>Password</FormLabel>
                             <Input name="password" type='password' />
                         </Box>
-                        <SubmitButton />
+                        <SubmitButton width={'100%'} />
                         <Text><Link href="/auth/recovery/link">Forgot Password?</Link></Text>
                     </VStack>
                 </FormControl>

@@ -15,7 +15,7 @@ import {
 import { useFormState } from "react-dom";
 import sendResetLink from "@/actions/auth/sendResetLink";
 import FormAlert from "../../FormAlert";
-import SubmitButton from "../../components/SubmitButton";
+import SubmitButton from "@/components/SubmitButton";
 import type { FormResponse } from "@/types/budgetbuddy";
 
 export default function ResetPasswordLinkPage() {
@@ -44,7 +44,7 @@ export default function ResetPasswordLinkPage() {
                             <FormLabel>Email</FormLabel>
                             <Input name="email" type="email" />
                         </Box>
-                        <SubmitButton />
+                        <SubmitButton width={'100%'} />
                         <Text><Link href="/auth/login">Go to Login Page</Link></Text>
                     </VStack>
                 </FormControl>
