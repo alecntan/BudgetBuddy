@@ -23,8 +23,12 @@ export default async function inviteAction(
 
     const cookieStore = cookies();
     const supabase = createActionClient(cookieStore);
+    const { data : { user } } = await supabase.auth.getUser();
+    if(!user) {
+        return { ...basicResult, isError: true, message: "Access Denied" };
+    }
+
     const { data: isAdmin, error: actionError } = await supabase.rpc('is_budget_buddy_admin');
-    console.log(isAdmin);
     
     if( actionError ) {
         return { ...basicResult, isError: true, message: "Could not invite user. Please try again later" };        
@@ -37,19 +41,17 @@ export default async function inviteAction(
     const formFirstName = formData.get('first_name') as string;
     const formLastName = formData.get('last_name') as string;
     const formEmail = formData.get('email') as string;
-    const formPassword = formData.get('password') as string; 
     const userRole = formData.get('user_role') as UserRole;
 
     const credentialSchema = z.object({
         first_name : z.string(),
         last_name: z.string(),
         email: z.string().email(),
-        password: z.string(),
         user_role: z.enum(["admin", "director", "manager", "associate"])
     }).required()
 
     try {
-        credentialSchema.parse({ first_name: formFirstName, last_name: formLastName, email: formEmail, password: formPassword, user_role : userRole });
+        credentialSchema.parse({ first_name: formFirstName, last_name: formLastName, email: formEmail, user_role : userRole });
     } catch( e) {
         if ( e instanceof ZodError ) {
             return { ...basicResult, isError: true, message: `${e.issues[0].message}`}
