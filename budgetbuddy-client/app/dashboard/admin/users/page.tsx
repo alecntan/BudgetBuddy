@@ -42,8 +42,15 @@ export default function UserPage() {
         }
     }
 
-
     const initialSearchQuery = { name : "", roles: ["admin", "director", "manager", "associate"]};
+
+    const onReloadUserList = async () => {
+        const count = await getNumUsers(initialSearchQuery);
+        setNumOfUsers(count);
+        const users = await getAllUserProfiles( initialSearchQuery, startingIndex, startingIndex + NUM_USER_PER_PAGE - 1);
+        setAllUsers(users);
+    };
+
     const [ searchQuery, setSearchQuery ] = useState<{ name : string; roles: ( string | number )[]}>(initialSearchQuery);
     const handleOnSearch = ( params : { name : string; roles: ( string | number )[] }) => {
         setSearchQuery(params);
@@ -82,7 +89,7 @@ export default function UserPage() {
                 </CardHeader>
             </Card>
             <SearchUsers onSubmit={handleOnSearch} />
-            <UserList title={'Members'} users={allUsers} />
+            <UserList title={'Members'} users={allUsers} onReload={onReloadUserList}/>
             <PaginationControl startIndex={startingIndex} offset={NUM_USER_PER_PAGE} onLeftClick={handleLeftClick} onRightClick={handleRightClick} />
             <InviteUserDrawer show={isOpen} toggleShow={onToggle} />
         </Flex>

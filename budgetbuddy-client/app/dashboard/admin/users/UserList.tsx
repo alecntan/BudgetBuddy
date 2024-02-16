@@ -11,10 +11,13 @@ Stack,
 StackDivider,
 IconButton,
 Badge,
+Button,
+Center,
+CircularProgress
 } from '@chakra-ui/react';
 import { MdModeEdit } from 'react-icons/md';
 
-const UserList = ({ title, users } : {title: string, users : Array<UserProfile>})  => {
+const UserList = ({ title, users, onReload } : {title: string, users : Array<UserProfile>, onReload: () => void })  => {
 
     const onUserEdit = ( userInfo : UserProfile ) => {
         console.log(userInfo);
@@ -23,17 +26,28 @@ const UserList = ({ title, users } : {title: string, users : Array<UserProfile>}
     return (
         <Card width={'100%'} variant={'elevated'} marginTop={'10px'}>
             <CardHeader borderBottom={'solid'} borderBottomWidth={'2px'} borderColor={'#f5f5f5'}>
-                <Heading size={'sm'}>{title}</Heading>
+                <Flex justifyContent={'space-between'} alignItems={'center'}>
+                    <Heading size={'sm'}>{title}</Heading>
+                    <Button size={'sm'} onClick={onReload}>Reload</Button>
+                </Flex>
             </CardHeader>
             <CardBody>
-                <Stack divider={<StackDivider />} spacing={'4'}>
+                { users.length > 0 ? ( <Stack divider={<StackDivider />} spacing={'4'}>
                     { users.map( ( user, index ) => (
                         <UserItem key={index} userInfo={user} onUserEdit={onUserEdit} />
-                    ) )}
-                </Stack>
+                    )) }
+                </Stack> ) : <Loading /> }
             </CardBody>
         </Card>
     );
+};
+
+const Loading = () => {
+    return (
+        <Center width={'100%'}>
+            <CircularProgress isIndeterminate size={'70px'} />
+        </Center>
+    );    
 };
 
 const UserItem = ({ userInfo, onUserEdit } : { userInfo : UserProfile, onUserEdit: ( user : UserProfile ) => void }) => {
