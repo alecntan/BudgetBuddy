@@ -22,6 +22,8 @@ export async function GET( request : NextRequest ) {
         if( !error ) {
             redirectTo.searchParams.delete('next');
             return NextResponse.redirect(redirectTo);
+        } else {
+            console.log(error.message);
         }
     }
 
