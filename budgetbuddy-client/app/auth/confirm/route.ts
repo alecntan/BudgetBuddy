@@ -23,10 +23,11 @@ export async function GET( request : NextRequest ) {
             redirectTo.searchParams.delete('next');
             return NextResponse.redirect(redirectTo);
         } else {
-            console.log(error.message);
+            console.log(`Confirm Route Error: ${error.message}`);
         }
     }
 
+    console.log(`Confirm Route: Error Found - rerouting to Error Page`);
     redirectTo.pathname = '/error';
     return NextResponse.redirect(redirectTo);
 }
