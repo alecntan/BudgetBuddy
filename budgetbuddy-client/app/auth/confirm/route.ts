@@ -20,14 +20,9 @@ export async function GET( request : NextRequest ) {
         const supabase = createClient(cookieStore);
         const { error } = await supabase.auth.verifyOtp({ token_hash: token_hash, type: type  });
         if( !error ) {
-            redirectTo.searchParams.delete('next');
-            return NextResponse.redirect(redirectTo);
-        } else {
-            console.log(`Confirm Route Error: ${error.message}`);
+            return NextResponse.redirect(`${process.env.APP_DOMAIN}/auth/recovery/reset`);
         }
     }
-
-    console.log(`Confirm Route: Error Found - rerouting to Error Page`);
     redirectTo.pathname = '/error';
     return NextResponse.redirect(redirectTo);
 }
