@@ -32,11 +32,9 @@ const UserList = ({ title, users, onReload } : {title: string, users : Array<Use
                 </Flex>
             </CardHeader>
             <CardBody>
-                { users.length > 0 ? ( <Stack divider={<StackDivider />} spacing={'4'}>
-                    { users.map( ( user, index ) => (
-                        <UserItem key={index} userInfo={user} onUserEdit={onUserEdit} />
-                    )) }
-                </Stack> ) : <Loading /> }
+                <Stack divider={<StackDivider />} spacing={'4'}>
+                { users.length > 0 ? ( users.map( ( user, index ) => (<UserItem key={index} userInfo={user} onUserEdit={onUserEdit} />)) ) : <Loading /> }
+                </Stack> 
             </CardBody>
         </Card>
     );
