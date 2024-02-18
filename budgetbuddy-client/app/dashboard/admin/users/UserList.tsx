@@ -13,30 +13,40 @@ IconButton,
 Badge,
 Button,
 Center,
-CircularProgress
+CircularProgress,
+useDisclosure,
 } from '@chakra-ui/react';
+import { useState } from 'react';
 import { MdModeEdit } from 'react-icons/md';
+import EditUserDrawer from "./EditUserDrawer";
 
 const UserList = ({ title, users, onReload } : {title: string, users : Array<UserProfile>, onReload: () => void })  => {
 
+    const { isOpen, onToggle } = useDisclosure();
+    const [ selectedUser, setSelectedUser ] = useState<UserProfile | null>(null);
+
     const onUserEdit = ( userInfo : UserProfile ) => {
-        console.log(userInfo);
+        setSelectedUser(userInfo); 
+        onToggle();
     };
 
     return (
-        <Card width={'100%'} variant={'elevated'} marginTop={'10px'}>
-            <CardHeader borderBottom={'solid'} borderBottomWidth={'2px'} borderColor={'#f5f5f5'}>
-                <Flex justifyContent={'space-between'} alignItems={'center'}>
-                    <Heading size={'sm'}>{title}</Heading>
-                    <Button size={'sm'} onClick={onReload}>Reload</Button>
-                </Flex>
-            </CardHeader>
-            <CardBody>
-                <Stack divider={<StackDivider />} spacing={'4'}>
-                { users.length > 0 ? ( users.map( ( user, index ) => (<UserItem key={index} userInfo={user} onUserEdit={onUserEdit} />)) ) : <Loading /> }
-                </Stack> 
-            </CardBody>
-        </Card>
+        <>
+            <Card width={'100%'} variant={'elevated'} marginTop={'10px'}>
+                <CardHeader borderBottom={'solid'} borderBottomWidth={'2px'} borderColor={'#f5f5f5'}>
+                    <Flex justifyContent={'space-between'} alignItems={'center'}>
+                        <Heading size={'sm'}>{title}</Heading>
+                        <Button size={'sm'} onClick={onReload}>Reload</Button>
+                    </Flex>
+                </CardHeader>
+                <CardBody>
+                    <Stack divider={<StackDivider />} spacing={'4'}>
+                    { users.length > 0 ? ( users.map( ( user, index ) => (<UserItem key={index} userInfo={user} onUserEdit={onUserEdit} />)) ) : <Loading /> }
+                    </Stack> 
+                </CardBody>
+            </Card>
+            <EditUserDrawer show={isOpen} toggleShow={onToggle} user={selectedUser} />
+        </>
     );
 };
 
