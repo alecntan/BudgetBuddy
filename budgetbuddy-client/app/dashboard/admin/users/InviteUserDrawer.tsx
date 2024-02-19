@@ -17,8 +17,9 @@ Box,
 Flex,
 RadioGroup,
 Radio,
+useToast,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FormResponse } from '@/types/budgetbuddy';
 import inviteAction from "@/actions/auth/inviteAction";
 import { useFormState } from "react-dom";
@@ -27,6 +28,7 @@ import SubmitButton from '@/components/SubmitButton';
 
 const InviteUserDrawer = ({ show, toggleShow } : { show : boolean, toggleShow : () => void }) => {
 
+    const toast = useToast();
 
     const initialState : FormResponse<boolean> = {
         isRedirect: false,
@@ -37,6 +39,19 @@ const InviteUserDrawer = ({ show, toggleShow } : { show : boolean, toggleShow : 
     };
     const [ userRole, setUserRole ] = useState<string>('associate');
     const [ state, formAction ] = useFormState( inviteAction, initialState);
+
+    useEffect( () => {
+        if( state.isError || state.result ) {
+            toast({
+                title : "Invited User",
+                description : state.message,
+                status: state.isError ? "error" : "success",
+                duration: 5000,
+                isClosable : true
+            });
+        }
+        console.log('Executing useEffect');
+    }, [ state, toast ]);
 
     return (
         <Drawer
@@ -50,7 +65,6 @@ const InviteUserDrawer = ({ show, toggleShow } : { show : boolean, toggleShow : 
                 <DrawerCloseButton />
                 <DrawerHeader>Invite New User</DrawerHeader>
                 <DrawerBody>
-                    <FormAlert isError={state.isError} message={state.message} />
                     <form style={{ width: '100%', marginTop: '15px' }} action={formAction}>
                         <FormControl isRequired>
                             <VStack spacing={'25px'}>
