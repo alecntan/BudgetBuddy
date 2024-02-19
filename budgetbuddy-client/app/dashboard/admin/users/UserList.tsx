@@ -15,19 +15,30 @@ Button,
 Center,
 CircularProgress,
 useDisclosure,
+Menu,
+MenuButton,
+MenuList,
+MenuItem,
+useToast,
+AlertDialog,
+AlertDialogOverlay,
+AlertDialogContent,
+AlertDialogHeader,
+AlertDialogBody,
+AlertDialogFooter,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { MdModeEdit } from 'react-icons/md';
-import EditUserDrawer from "./EditUserDrawer";
+import deleteUserAction from "@/actions/auth/deleteUserAction";
 
 const UserList = ({ title, users, onReload } : {title: string, users : Array<UserProfile>, onReload: () => void })  => {
 
-    const { isOpen, onToggle } = useDisclosure();
+    const { isOpen : isDeleteDialogOpen, onToggle : toggleDeleteDialog } = useDisclosure();
     const [ selectedUser, setSelectedUser ] = useState<UserProfile | null>(null);
 
-    const onUserEdit = ( userInfo : UserProfile ) => {
-        setSelectedUser(userInfo); 
-        onToggle();
+    const handleUserDelete = ( user : UserProfile ) => {
+        setSelectedUser(user);
+        toggleDeleteDialog();
     };
 
     return (
@@ -41,12 +52,59 @@ const UserList = ({ title, users, onReload } : {title: string, users : Array<Use
                 </CardHeader>
                 <CardBody>
                     <Stack divider={<StackDivider />} spacing={'4'}>
-                    { users.length > 0 ? ( users.map( ( user, index ) => (<UserItem key={index} userInfo={user} onUserEdit={onUserEdit} />)) ) : <Loading /> }
+                    { users.length > 0 ? ( users.map( ( user, index ) => (<UserItem key={index} userInfo={user} onUserDelete={handleUserDelete} />)) ) : <Loading /> }
                     </Stack> 
                 </CardBody>
             </Card>
-            <EditUserDrawer show={isOpen} toggleShow={onToggle} user={selectedUser} />
+            <DeleteUserAlertDialog show={isDeleteDialogOpen} toggleShow={toggleDeleteDialog} user={selectedUser} />
         </>
+    );
+};
+
+const DeleteUserAlertDialog = ({ show, toggleShow, user } : { show : boolean, toggleShow : () => void, user : UserProfile | null }) => {
+   
+    const cancelRef = useRef<HTMLButtonElement | null>(null);
+    const toast = useToast();
+
+    if( user === null ) {
+        return null;
+    }
+
+    const handleDelete = async () => {
+        if( user !== null ) {
+            const result = await deleteUserAction(user.id);
+            toggleShow();
+            toast({
+                title: "Deleted User",
+                description: result.message,
+                status: result.isError ? "error" : "success",
+                duration: 5000,
+                isClosable: true
+            });
+        }
+    };
+
+    return (
+        <AlertDialog
+            isOpen={show}
+            leastDestructiveRef={cancelRef}
+            onClose={toggleShow}
+        >
+            <AlertDialogOverlay>
+                <AlertDialogContent>
+                    <AlertDialogHeader fontSize={'lg'} fontWeight={'bold'}>
+                       {`Delete ${user.first_name} ${user.last_name}`} 
+                    </AlertDialogHeader>
+                    <AlertDialogBody>
+                        {"Are you sure? You can't undo this action afterwards."}
+                    </AlertDialogBody>
+                    <AlertDialogFooter>
+                        <Button ref={cancelRef} onClick={toggleShow}>Cancel</Button>
+                        <Button colorScheme={'red'} ml={3} onClick={handleDelete}>Delete</Button>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialogOverlay>
+        </AlertDialog>
     );
 };
 
@@ -58,7 +116,7 @@ const Loading = () => {
     );    
 };
 
-const UserItem = ({ userInfo, onUserEdit } : { userInfo : UserProfile, onUserEdit: ( user : UserProfile ) => void }) => {
+const UserItem = ({ userInfo, onUserDelete } : { userInfo : UserProfile, onUserDelete: ( user : UserProfile ) => void }) => {
 
     const getRoleBadgeColor = ( role : UserRole ) => {
         switch( role ) {
@@ -73,15 +131,21 @@ const UserItem = ({ userInfo, onUserEdit } : { userInfo : UserProfile, onUserEdi
         }
     };
 
-    const handleUserEdit = () => {
-        onUserEdit(userInfo);
+    const handleUserDelete = () => {
+        onUserDelete(userInfo);
     };
 
     return (
         <Flex justifyContent={'space-between'} alignItems={'center'}>
-                <Heading width={'200px'} size={'sm'}>{`${userInfo.first_name} ${userInfo.last_name}`}</Heading>
-                <Badge colorScheme={getRoleBadgeColor(userInfo.user_role)} variant={'subtle'}>{userInfo.user_role}</Badge>
-                <IconButton onClick={handleUserEdit}  backgroundColor={'white'} aria-label={'edit User'} icon={<MdModeEdit size={'20px'} />} />
+            <Heading width={'200px'} size={'sm'}>{`${userInfo.first_name} ${userInfo.last_name}`}</Heading>
+            <Badge colorScheme={getRoleBadgeColor(userInfo.user_role)} variant={'subtle'}>{userInfo.user_role}</Badge>
+            <Menu>
+                <MenuButton backgroundColor={'white'} as={IconButton} aria-label={'edit user'} icon={<MdModeEdit size={'20px'} />} />
+                <MenuList>
+                    <MenuItem>Edit Role</MenuItem>
+                    <MenuItem color={'red'} onClick={handleUserDelete}>Delete</MenuItem>
+                </MenuList>
+            </Menu>
         </Flex>
     );
 };
