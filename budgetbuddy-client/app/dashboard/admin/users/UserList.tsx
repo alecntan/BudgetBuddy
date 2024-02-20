@@ -30,16 +30,22 @@ AlertDialogFooter,
 import { useState, useRef } from 'react';
 import { MdModeEdit } from 'react-icons/md';
 import deleteUserAction from "@/actions/auth/deleteUserAction";
+import EditUserRoleModal from "./EditUserRoleModal";
 
 const UserList = ({ title, users, onReload } : {title: string, users : Array<UserProfile>, onReload: () => void })  => {
 
     const { isOpen : isDeleteDialogOpen, onToggle : toggleDeleteDialog } = useDisclosure();
+    const { isOpen : isEditRoleModalOpen, onToggle : toggleEditRoleModal } = useDisclosure();
     const [ selectedUser, setSelectedUser ] = useState<UserProfile | null>(null);
 
     const handleUserDelete = ( user : UserProfile ) => {
         setSelectedUser(user);
         toggleDeleteDialog();
     };
+
+    const handleEditUserRole = ( user : UserProfile ) => {
+        toggleEditRoleModal();
+    }
 
     return (
         <>
@@ -52,11 +58,12 @@ const UserList = ({ title, users, onReload } : {title: string, users : Array<Use
                 </CardHeader>
                 <CardBody>
                     <Stack divider={<StackDivider />} spacing={'4'}>
-                    { users.length > 0 ? ( users.map( ( user, index ) => (<UserItem key={index} userInfo={user} onUserDelete={handleUserDelete} />)) ) : <Loading /> }
+                    { users.length > 0 ? ( users.map( ( user, index ) => (<UserItem key={index} userInfo={user} onUserDelete={handleUserDelete} onEditRole={handleEditUserRole} />)) ) : <Loading /> }
                     </Stack> 
                 </CardBody>
             </Card>
             <DeleteUserAlertDialog show={isDeleteDialogOpen} toggleShow={toggleDeleteDialog} user={selectedUser} />
+            <EditUserRoleModal show={isEditRoleModalOpen} toggleShow={toggleEditRoleModal} />
         </>
     );
 };
@@ -116,7 +123,7 @@ const Loading = () => {
     );    
 };
 
-const UserItem = ({ userInfo, onUserDelete } : { userInfo : UserProfile, onUserDelete: ( user : UserProfile ) => void }) => {
+const UserItem = ({ userInfo, onUserDelete, onEditRole } : { userInfo : UserProfile, onUserDelete: ( user : UserProfile ) => void, onEditRole: ( user : UserProfile) => void }) => {
 
     const getRoleBadgeColor = ( role : UserRole ) => {
         switch( role ) {
@@ -135,6 +142,10 @@ const UserItem = ({ userInfo, onUserDelete } : { userInfo : UserProfile, onUserD
         onUserDelete(userInfo);
     };
 
+    const handleEditUserRole = () => {
+        onEditRole(userInfo);
+    }
+
     return (
         <Flex justifyContent={'space-between'} alignItems={'center'}>
             <Heading width={'200px'} size={'sm'}>{`${userInfo.first_name} ${userInfo.last_name}`}</Heading>
@@ -142,7 +153,7 @@ const UserItem = ({ userInfo, onUserDelete } : { userInfo : UserProfile, onUserD
             <Menu>
                 <MenuButton backgroundColor={'white'} as={IconButton} aria-label={'edit user'} icon={<MdModeEdit size={'20px'} />} />
                 <MenuList>
-                    <MenuItem>Edit Role</MenuItem>
+                    <MenuItem onClick={handleEditUserRole}>Edit Role</MenuItem>
                     <MenuItem color={'red'} onClick={handleUserDelete}>Delete</MenuItem>
                 </MenuList>
             </Menu>
