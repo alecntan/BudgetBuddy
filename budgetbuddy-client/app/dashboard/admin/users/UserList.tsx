@@ -43,7 +43,8 @@ const UserList = ({ title, users, onReload } : {title: string, users : Array<Use
         toggleDeleteDialog();
     };
 
-    const handleEditUserRole = ( user : UserProfile ) => {
+    const handleEditUserRole = async ( user : UserProfile ) => {
+        setSelectedUser(user);
         toggleEditRoleModal();
     }
 
@@ -63,7 +64,7 @@ const UserList = ({ title, users, onReload } : {title: string, users : Array<Use
                 </CardBody>
             </Card>
             <DeleteUserAlertDialog show={isDeleteDialogOpen} toggleShow={toggleDeleteDialog} user={selectedUser} />
-            <EditUserRoleModal show={isEditRoleModalOpen} toggleShow={toggleEditRoleModal} />
+            <EditUserRoleModal user={selectedUser} show={isEditRoleModalOpen} toggleShow={toggleEditRoleModal} />
         </>
     );
 };

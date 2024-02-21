@@ -50,7 +50,6 @@ const InviteUserDrawer = ({ show, toggleShow } : { show : boolean, toggleShow : 
                 isClosable : true
             });
         }
-        console.log('Executing useEffect');
     }, [ state, toast ]);
 
     return (

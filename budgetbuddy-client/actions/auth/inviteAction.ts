@@ -68,7 +68,6 @@ export default async function inviteAction(
     const { error } = await supabaseAdmin.auth.admin.inviteUserByEmail(formEmail, { data: { first_name : formFirstName, last_name: formLastName, user_role: userRole }});
 
     if( error ) {
-        console.log(error.status);
         return { ...basicResult, isError: true, message: error.message }; 
     }     
 
