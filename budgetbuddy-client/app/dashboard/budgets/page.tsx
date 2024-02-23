@@ -7,9 +7,7 @@ Button,
 useDisclosure,
 } from '@chakra-ui/react';
 import { FaPlus } from 'react-icons/fa';
-import NewBudgetDrawer from './NewBudgetDrawer';
-import { useContext } from 'react';
-import { ProfileContext } from '../ProfileContext';
+import NewBudgetDrawer from './components/NewBudgetDrawer';
 import RestrictedComponent from '@/components/RestrictedComponent';
 
 export default function Budgets() {

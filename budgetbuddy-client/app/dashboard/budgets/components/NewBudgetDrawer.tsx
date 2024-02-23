@@ -13,17 +13,18 @@ Textarea,
 Button,
 Stack,
 Box,
-Text,
-Card,
-CardBody,
-StackDivider,
+Tag,
 } from '@chakra-ui/react';
 import SubmitButton from '@/components/SubmitButton';
-import { useState } from 'react';
+import { useContext } from 'react';
+import { ProfileContext } from '../../ProfileContext';
+import FormWithToast from '@/components/FormWithToast';
+import createBudget from '@/actions/budgets/createBudget';
 
 export default function NewBudgetDrawer({ show, toggleShow } : { show : boolean, toggleShow : () => void }) {  
 
-    
+    const userProfile = useContext(ProfileContext);
+
     return (
         <Drawer 
             isOpen={show}
@@ -34,24 +35,24 @@ export default function NewBudgetDrawer({ show, toggleShow } : { show : boolean,
         >
             <DrawerOverlay />
             <DrawerContent>
-                <form>
-                    <FormControl>
+                <FormWithToast toastTitle={"Create Budget"} onSubmit={createBudget}>
+                    <FormControl isRequired>
                         <DrawerCloseButton />
                         <DrawerHeader>Create New Budget</DrawerHeader>
                         <DrawerBody>
                             <Stack direction={'column'} spacing={'20px'}>
+                                <Box> 
+                                    <FormLabel>Owner</FormLabel>
+                                    <Tag variant={'solid'} colorScheme={'teal'}>{`${userProfile?.first_name} ${userProfile?.last_name}`}</Tag>
+                                </Box>
                                 <Box>
                                     <FormLabel>Name</FormLabel>
-                                    <Input type={'text'} name={'form_label'} />
+                                    <Input type={'text'} name={'budget-name'} />
                                 </Box>
                                 <Box>
                                     <FormLabel>Description</FormLabel>
-                                    <Textarea />
+                                    <Textarea name={'budget-description'} />
                                 </Box>
-                                <Box>
-                                    <FormLabel>Add Directors</FormLabel>
-                                    <SearchAndSelectUsers />
-                               </Box>
                             </Stack>
                         </DrawerBody>
                         <DrawerFooter>
@@ -59,37 +60,8 @@ export default function NewBudgetDrawer({ show, toggleShow } : { show : boolean,
                             <SubmitButton />
                         </DrawerFooter>
                     </FormControl>
-                </form>
+                </FormWithToast>
             </DrawerContent>
         </Drawer>
     ); 
 }
-
-
-const SearchAndSelectUsers = () => {
-
-
-    const [ showList, setShowList ] = useState<boolean>(false);
-    
-    const handleOnInputFocus = () => {
-        setShowList(true);
-    };
-
-    const handleOnInputBlur = () => {
-        setShowList(false);
-    };
-
-    return (
-        <Box width={'100%'}>
-            <Input position={'relative'} onFocus={handleOnInputFocus} onBlur={handleOnInputBlur}/>
-            <Card display={ showList ? 'block' : 'none' } zIndex={'1'} width={'400px'} height={'250px'} variant={'elevated'} position={'absolute'}> 
-                <CardBody>
-                    <Stack shouldWrapChildren={true} overflow={'scroll'} height={'200px'} direction={'column'} divider={<StackDivider />}>
-                        {[...new Array<number>(20)].map((value, index) =>  <Text key={index}>{`${value}`}</Text>)}
-                    </Stack>
-                </CardBody>
-            </Card>
-        </Box>
-    );
-};
-
