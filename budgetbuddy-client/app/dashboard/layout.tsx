@@ -34,6 +34,10 @@ export default function DashboardLayout({ children } : { children : React.ReactN
         router.push("/dashboard/admin/users");
     }
 
+    const onClickBudgetsButton = () => {
+        router.push("/dashboard/budgets");
+    }
+
     if( UserProfile === null ) {
         return (
             <Center width={'100%'} height={'100vh'}>
@@ -63,8 +67,8 @@ export default function DashboardLayout({ children } : { children : React.ReactN
                         <Heading size={'sm'}>Budget Buddy</Heading>
                     </Box>
                     <HStack paddingX={'30px'} spacing="50px">
-                        < Button size={'sm'} variant={'link'} color={'black'}>Home</Button>
-                        <Button size={'sm'} variant={'link'} color={'black'}>Budgets</Button>
+                        <Button size={'sm'} variant={'link'} color={'black'}>Home</Button>
+                        <Button size={'sm'} variant={'link'} color={'black'} onClick={onClickBudgetsButton}>Budgets</Button>
                         { UserProfile.user_role === 'admin' ? ( <Menu>
                             <MenuButton as={Button} size={'sm'} color={'black'} variant={'link'} rightIcon={<GoChevronDown />} backgroundColor={'white'}>
                                Admin 

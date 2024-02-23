@@ -1,9 +1,16 @@
 "use client"
 
-import { Heading, SimpleGrid, Card, CardHeader, CardBody, Text } from "@chakra-ui/react";
+import { 
+Heading, 
+Flex,
+} from "@chakra-ui/react";
 
 export default function DashboardPage() {
     return (
-        <Heading>Dashboard Page</Heading>
+        <>
+            <Flex width={'100%'} justifyContent={'space-between'} alignItems={'center'}>
+                <Heading>Dashboard Page</Heading>
+            </Flex>
+        </>
     );
 }
