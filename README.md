@@ -46,8 +46,12 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
+<div align="center">
+  
+  ![budget-buddy-demo](https://github.com/alecntan/BudgetBuddy/assets/31383469/6a753fe8-1fb1-41e3-aa1e-bc642bb6ce65)
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+</div>
+
 
 This project is a web application designed to streamline budget management, expense tracking, and reimbursement processing for teams. Its development stemmed from the realization that my church's ministries lack a centralised system for managing budgets and tracking expenses, hindering effective financial management and transparency within the church. 
 
@@ -150,6 +154,8 @@ These are displayed on your terminal after you start your local supabase instanc
 
 The app is seeded with test accounts on startup. You can find these accounts in the `supabase/seed.sql` file.
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 ### Running the App
 1. Start Docker Desktop and run your local supabase instance
    
@@ -172,7 +178,7 @@ Distributed under the BSD 3-Clause License. See `LICENSE.txt` for more informati
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 * [Best ReadMe Template](https://github.com/othneildrew/Best-README-Template/blob/master/README.md)
-* [Markdown-Badgets](https://github.com/Ileriayo/markdown-badges)
+* [Markdown-Badges](https://github.com/Ileriayo/markdown-badges)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
