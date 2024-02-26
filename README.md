@@ -53,11 +53,11 @@
 </div>
 
 
-This project is a web application designed to streamline budget management, expense tracking, and reimbursement processing for teams. Its development stemmed from the realization that my church's ministries lack a centralised system for managing budgets and tracking expenses, hindering effective financial management and transparency within the church. 
+This project is a web application designed to streamline budget management, expense tracking, and reimbursement processing for teams. Its development stemmed from the realisation that my church's ministries lack a centralised system for managing budgets and tracking expenses, hindering effective financial management and transparency within the church. 
 
 As a result, volunteers often face difficulties accessing information about allocated budgets and the status of their reimbursement requests. Additionally, ministry leaders struggle to keep track of approved or rejected budget requests.
 
-By centralizing these processes, we aim to improve transparency, efficiency, and accountability within the organization.
+By centralising these processes, we aim to improve transparency, efficiency, and accountability within the organisation.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -107,7 +107,7 @@ By centralizing these processes, we aim to improve transparency, efficiency, and
 - [ ] User Dashboard
   - [ ] See Pending budget items
   - [ ] See Pending expenses
-  - [ ] See Announcments
+  - [ ] See Announcements
 
 
 See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
